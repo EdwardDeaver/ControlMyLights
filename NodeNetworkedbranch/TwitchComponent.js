@@ -77,6 +77,7 @@ function onMessageHandler (target, context, msg, self) {
         // If and only if the color exists in our list continue
         if(colorLookupData[0] == true){
             validColor = true;
+            //Send to Express
             IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2]);         
             return true;
         }
