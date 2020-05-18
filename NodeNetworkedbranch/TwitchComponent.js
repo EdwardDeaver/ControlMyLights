@@ -11,12 +11,8 @@ const colorDataInterface = new ColorData();
 
 
 console.log(process.env.BOT_USERNAME);
-// Color Lookups for simple commands 
-// Color = hex string
-var colorLookups = new Map(); 
-colorLookups.set("red", "ff0000");
-colorLookups.set("green", "00ff00");
-colorLookups.set("blue", "0000ff");
+
+
 
 
 // Define configuration options
