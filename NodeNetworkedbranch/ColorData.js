@@ -1,8 +1,5 @@
-var colorLookups = new Map(); 
-colorLookups.set("red", "ff0000");
-colorLookups.set("green", "00ff00");
-colorLookups.set("blue", "0000ff");
-
+var fs = require('fs');
+var colorLookups= JSON.parse(fs.readFileSync('colors.json', 'utf8'));
 
 class ColorData{
 
@@ -10,14 +7,24 @@ class ColorData{
 	// Input: String is from command
 	// Output: Array of results. [X, Y, Z]. X is a boolean (True/False). 
 	// Y is the key value of the colorLookups Map. Z is the value of the key
-	 lookUpColor(string){
-	  for (let [key, value] of colorLookups) {
-	    if(string.includes("!"+key)){
-	      return [true, key, value];
-	      console.log("!"+key + ' = ' + value)
+
+
+	lookUpColor(string){
+
+		// Note this orgininally was going to be a map object. It was very fast
+		// After switchingt to a JSON is was really slow using the origninal for loop method to check if the color existsed in it
+		// So I replaced it with a includes lookup on the keys value. Much faster now!
+		// !lime resulted in an almost stalling application. It took ~10 seconds to retrieve the data. Now it takes <1 second. 
+		console.log(string);
+		let colorToCheck = string.slice(1);
+		let colorCheck = Object.keys(colorLookups).includes(colorToCheck);
+		console.log(colorCheck);
+		console.log(colorLookups[colorToCheck]);
+
+		if(colorCheck){
+		 	return [true, colorToCheck, colorLookups[colorToCheck]];
 	    }
-	  }
-	  return [false, 0, 0];
-	}
+    	return [false, 0, 0];
+	}	
 }
 module.exports = ColorData;
