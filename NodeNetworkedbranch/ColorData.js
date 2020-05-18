@@ -7,8 +7,6 @@ class ColorData{
 	// Input: String is from command
 	// Output: Array of results. [X, Y, Z]. X is a boolean (True/False). 
 	// Y is the key value of the colorLookups Map. Z is the value of the key
-
-
 	lookUpColor(string){
 
 		// Note this orgininally was going to be a map object. It was very fast
