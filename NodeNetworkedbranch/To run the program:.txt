@@ -1,0 +1,3 @@
+To run the program:
+
+ concurrently "npm:Server" "npm:Twitch"

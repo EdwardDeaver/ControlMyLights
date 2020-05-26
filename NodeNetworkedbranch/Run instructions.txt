@@ -2,3 +2,10 @@ Run instructions
 
 node ExpressServer.js
 node TwitchComponent.js
+
+
+ concurrently "npm:mongo-win" "npm:Server" "npm:Twitch" 
+
+ // Mac
+
+  concurrently "npm:mongo-mac" "npm:Server" "npm:Twitch" 
