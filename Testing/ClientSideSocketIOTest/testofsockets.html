@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	
+	
+	<script src="socket.io.js"></script>
+<script>
+  var socket = io('https://nodejscolorpicker.glitch.me');
+  socket.on('connect', function(){
+      
+  });
+  socket.on('colordata', function(data){
+
+  	console.log(data);
+  });
+  socket.on('disconnect', function(){});
+</script>
+</body>
+</html>
