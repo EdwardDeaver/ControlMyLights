@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Control my lights</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+  
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/a-color-picker@1.1.8/dist/acolorpicker.js"></script>
+  
+  <div class="picker" 
+     acp-color="#FFFFFF"
+            acp-show-rgb="yes"
+     acp-show-hsl="no"
+     acp-show-hex="yes"
+     acp-palette="red|green|blue|purple|yellow|white">
+</div>
+<p id="textbox">
+  
+  </p>
+<form action="/colorsubmit" method="post">
+    <label for="color">Color: </label>
+    <input id="colorHex" type="text" name="colorHex" value="#00AAFF">
+    <input type="submit" value="Set Color">
+</form>
+<script>
+    let currentcolor = "null";
+AColorPicker.from('.picker')
+.on('change', (picker, color) => {
+  document.body.style.backgroundColor = color;
+  currentcolor = color;
+  document.getElementById("colorHex").value = AColorPicker.parseColor(color, "hex");
+
+})
+.on('coloradd', (picker, color) => {
+ console.log(color);
+})
+.on('colorremove', (picker, color) => {
+  // color removed: color
+  // modified palette: picker.palette
+});
+
+
+  </script>
+</body>
+</html>
