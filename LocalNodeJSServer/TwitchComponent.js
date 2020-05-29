@@ -1,13 +1,19 @@
-const tmi = require('tmi.js');
 require('dotenv').config();
+
+const tmi = require('tmi.js');
+
 const InternalNetworking = require('./InternalNetworking');
 const IntNetworking = new InternalNetworking();
-const source = "Twitch";
+
+const DataValidation = require('./DataValidation');
+const DataValidationFunc = new DataValidation();
+
 
 const ColorData = require('./ColorData');
 const colorDataInterface = new ColorData();
 
 
+const source = "Twitch";
 
 
 console.log(process.env.BOT_USERNAME);
@@ -45,7 +51,62 @@ client.connect();
 function onMessageHandler (target, context, msg, self) {
   if (self) { return; } // Ignore messages from the bot
     //Sanatize message
-    const command =  SanatizeData(msg);
+    let command =  DataValidationFunc.cleanData(msg);
+    let msgContext = JSON.stringify(context);
+    console.log(JSON.parse(msgContext).username);
+    let msgUsername = JSON.parse(msgContext).username;
+    ////////////////
+    // Input ! for exact color 
+    // Input # for hex color
+    ////////////////
+
+    let validColor = false;
+    let hex = false;
+
+    if(command.includes("#")){
+          console.log("MSG has # WILL END");
+          console.log("Command fully trimmed", command);
+          let validatedHEX = DataValidationFunc.validHex(command);
+          if(validatedHEX[0]){
+            validColor = true;
+            hex = true;
+            IntNetworking.sendInternal(source, msgUsername, validColor, hex, validatedHEX[1]);
+            return true;
+          }
+          console.log(validatedHEX[0]);
+          console.log(validatedHEX[1]);
+
+    }
+    if(command.includes("!")){
+          console.log("MSG has ! WILL END");
+          // Looks up colors and will return true/false of ot exists 
+          // in the Map and will continue if true
+          let colorLookupData = colorDataInterface.lookUpColor(command);
+          // If and only if the color exists in our list continue
+          if(colorLookupData[0]){
+              validColor = true;
+              //Send to Express
+              IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2]);         
+              return true;
+          }
+        }
+    }
+  
+
+
+// Called every time the bot connects to Twitch chat
+function onConnectedHandler (addr, port) {
+  console.log(`* Connected to ${addr}:${port}`);
+}
+
+
+/*
+BACKUP OF OLD MESSAGE CODE 
+
+
+if (self) { return; } // Ignore messages from the bot
+    //Sanatize message
+    let command =  SanatizeData(msg);
     let msgContext = JSON.stringify(context);
     console.log(JSON.parse(msgContext).username);
     let msgUsername = JSON.parse(msgContext).username;
@@ -90,7 +151,6 @@ function onMessageHandler (target, context, msg, self) {
       return false;
     }
 
-}
 
 // Sanatize Data turns String input to array of input 
 // Input: String is from the Twitch Data
@@ -101,7 +161,5 @@ function SanatizeData(string) {
   return stringReplaced;
 }
 
-// Called every time the bot connects to Twitch chat
-function onConnectedHandler (addr, port) {
-  console.log(`* Connected to ${addr}:${port}`);
-}
+
+*/
