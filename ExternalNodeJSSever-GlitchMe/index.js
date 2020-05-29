@@ -26,42 +26,21 @@ const server = express()
   .get('/', (req, res) => res.render('pages/index'))
   .post("/colorsubmit", cors(corsOptions), function(request, response) {
     console.log(request.headers.referer);
-    //Check if sender is from the website
-    if(request.headers.referer === "https://nodejscolorpicker.glitch.me/"){
-      console.log(request.body.colorHex);
-      // Check if the input is a string
-          if(typeof request.body.colorHex === "string"){
-            console.log("reached");
-            //Remove all non-needed characters
-            var ASCIIONLY = request.body.colorHex.replace(/[^\x00-\x7F]/g, "");
-            // Only Allow alpha numeric. A-F in accourandence with HEX, 0-9. Also removes the hash mark.
-            var cleanedInput = ASCIIONLY.replace(/[^0-9a-f]/gi, "");
-            console.log(cleanedInput);
-        // Check if the string is 7 characters
-            if(cleanedInput.length==6){
-              console.log("correct length");
-              //check if first character is a pound symbke
-              io.emit('colordata',cleanedInput);
-              response.status(204).send();  
-            }
-            else{
-              console.log("Not correct length REQUEST");
-              response.status(400).send();  
-            }
-          }
-          else{
-            console.log("Not String REQUEST");
-            response.status(400).send();  
-
-          }
-   //  response.send("END");
-//    response.status(204).send();  
+    //VALIDATE MESSAGE
+    try{
+    let validate = checkHex(request.body.colorHex, "https://nodejscolorpicker.glitch.me/", request.headers.referer);
+    if(validate[0]){
+      console.log("VALIDATED"+ validate[1]);
+      io.emit('colordata',validate[1]);
+      response.status(204).send("passed");  
     }
     else{
-          response.status(400).send();  
-
+      response.status(400).send("FAILED INPUT");
     }
-    //Socket io emit on the 'news' event
+    }
+    catch{
+      response.status(400).send("FAILED INPUT");
+    }
 })
     .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 var io = socketIO(server);
@@ -72,7 +51,49 @@ io.on('connection', (socket) => {
   io.send('an event sent to all connected clients');
   socket.on('disconnect', () => console.log('Client disconnected'));
 });
-
+//Debug for the client socket io testing
 //io.send( new Date().toTimeString());
 
+
+function checkHex(input, hostDomain, referer){
+  console.log(input);
+  console.log(referer);
+  let ORIGINALINPUT = input;
+  try{
+    
+
+  if(hostDomain === referer){
+     // console.log("CHECKHEX");
+      // Check if the input is a string
+          if(typeof ORIGINALINPUT === "string"){
+           // console.log("reached");
+            //Remove all non-needed characters
+            var ASCIIONLY = ORIGINALINPUT.replace(/[^\x00-\x7F]/g, "");
+            // Only Allow alpha numeric. A-F in accourandence with HEX, 0-9. Also removes the hash mark.
+            var cleanedInput = ASCIIONLY.replace(/[^0-9A-Fa-f]/gi, "");
+            console.log(cleanedInput);
+        // Check if the string is 7 characters
+            if(cleanedInput.length==6 && ORIGINALINPUT[0] ==="#"){
+            //  console.log("correct length");
+              //check if first character is a pound symbke
+              return [true, cleanedInput];
+            }
+            else{
+              return false;
+            }
+          }
+          else{
+            return false; 
+
+          }
+    return false;
+  }
+  }
+    catch{
+      return false;
+    }
+  
+
+  
+}
 //setInterval(() => io.emit('time',new Date().toTimeString()), 100);
