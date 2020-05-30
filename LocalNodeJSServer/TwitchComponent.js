@@ -70,7 +70,8 @@ function onMessageHandler (target, context, msg, self) {
           if(validatedHEX[0]){
             validColor = true;
             hex = true;
-            IntNetworking.sendInternal(source, msgUsername, validColor, hex, validatedHEX[1]);
+            let rgb = colorDataInterface.hexToRgb("#"+validatedHEX[1]);
+            IntNetworking.sendInternal(source, msgUsername, validColor, hex, validatedHEX[1],rgb.r, rgb.g, rgb.b);
             return true;
           }
           console.log(validatedHEX[0]);
@@ -86,10 +87,16 @@ function onMessageHandler (target, context, msg, self) {
           if(colorLookupData[0]){
               validColor = true;
               //Send to Express
-              IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2]);         
+              let rgb = colorDataInterface.hexToRgb("#"+colorLookupData[2]);
+
+              IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2], rgb.r, rgb.g, rgb.b);         
               return true;
           }
         }
+      validColor = false;
+      hex = false;
+      IntNetworking.sendInternal(source, msgUsername, validColor, hex, "false");
+      return false;         
     }
   
 

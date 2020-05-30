@@ -21,13 +21,20 @@ const assert = require('assert');
   }
 
   createCollection(collectionName) {
-    this.MongoClientVal.db(this.dbName).createCollection(collectionName, function(err, res) {
+    try{
+        this.MongoClientVal.db(this.dbName).createCollection(collectionName, function(err, res) {
         if (err) throw err;
-        console.log("THISIS FROM CLASS");
-        return res;
-      });
+          console.log(err);
+          return res;
+      }); 
+    }
+    catch(e){
+      console.log(e);
+    }
+    return false;
   }
   InsertInto(collectionName, data){
+
     this.MongoClientVal.db(this.dbName).collection(collectionName).insertOne(data, function(err, res) {
         if (err) throw err;
         console.log("1 document inserted");

@@ -2,21 +2,19 @@
 const express = require('express');
 const path = require('path')
 const bodyParser = require('body-parser');
-const socketIO = require('socket.io');
+require('dotenv').config();
 const PORT = process.env.PORT || 5000
 //MONGODB
 // Connection URL
 const url = 'mongodb://localhost:27017';
+const mongoDB = process.env.MONGO_DB;
 // Database Name
-//const dbName = 'NodeJSTwitch';
-/* const MongoDBInterface = require('./MongoDBInterface');
-const MongoDB = new MongoDBInterface(url, dbName);
-MongoDB.createCollection("TotalComments");
-var ModelForDataobjects = { source: "TWITCH", username: "Company Inc", validColor: true/false, hex: true/false, color: "Highway 37", date: 12345535, time: 123 , dateTime: new Date()};
-MongoDB.InsertInto("TotalComments", ModelForDataobjects);
+const MongoDBInterface = require('./MongoDBInterface');
+const MongoDB = new MongoDBInterface(url, mongoDB);
+MongoDB.createCollection(mongoDB);
+//MongoDB.InsertInto("TotalComments", ModelForDataobjects);
 
 
-*/
 
 // SETUP FILES
 //////////////
@@ -32,7 +30,15 @@ const server = express()
   .post("/sendcolordata", function(request, response) {
   	console.log("Recieved");
    	console.log(request.body);
+    let ModelForDataobjects = { source: request.body.source,
+                                username: request.body.username,
+                                validColor: request.body.validColor,
+                                hex: request.body.hex, 
+                                color: request.body.color, 
+                                dateTime: new Date()
+                              };
 
+    MongoDB.InsertInto(mongoDB, ModelForDataobjects);
 
    	// Save to MongoDB
    	// Write to Arduino
@@ -40,6 +46,7 @@ const server = express()
 
    // response.status(statusCode);
     response.send(request.body);
+
   	//Socket io emit on the 'news' event
 })
     .listen(PORT, () => console.log(`Listening on ${ PORT }`))
