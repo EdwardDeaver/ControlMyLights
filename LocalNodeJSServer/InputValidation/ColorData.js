@@ -1,5 +1,6 @@
 var fs = require('fs');
-var colorLookups= JSON.parse(fs.readFileSync('colors.json', 'utf8'));
+process.chdir(__dirname);
+var colorLookups= JSON.parse(fs.readFileSync('./colors.json', 'utf8'));
 
 class ColorData{
 
