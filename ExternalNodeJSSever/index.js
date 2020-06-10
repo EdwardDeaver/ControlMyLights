@@ -31,7 +31,7 @@ const server = express()
     let validate = checkHex(request.body.colorHex, "https://nodejscolorpicker.glitch.me/", request.headers.referer);
     if(validate[0]){
       console.log("VALIDATED"+ validate[1]);
-      io.emit('colordata',validate[1]);
+      io.emit('colordata',"#"+validate[1]);
       response.status(204).send("passed");  
     }
     else{
