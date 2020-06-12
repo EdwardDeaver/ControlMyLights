@@ -1,5 +1,5 @@
 # TwitchChatLightControl
-Using Twitch Chat to control my lights. This project is built around Middlware Messaging paradigm. 
+Using Twitch Chat to control my lights. This project is built around Message Oriented Middleware model. 
 
 ## Distinct Parts of the application:
 
@@ -48,9 +48,8 @@ Using Twitch Chat to control my lights. This project is built around Middlware M
 
 ## Networking and the dataflow
 
+(TWITCH SITE  <--SOCKET--> TwitchComponent.  / Website --SOCKETIO(colordata)--> SocketIOListening ) --POST REQ(/sendcolordata)---> ExpressServer ----SOCKETIO (colorData) ---> ( MongoDBListener --WRITE--> MONGODB.  / ArduinoListener --WRITE--> Arduino)
 
-    
-Node:
-(Twitch Component) ----> HTTP POST REQ. (Expresss Node Component ----> MongoDB Write ----> Write to Arduino)
+
 
 
