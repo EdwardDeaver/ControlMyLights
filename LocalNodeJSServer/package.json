@@ -16,14 +16,17 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "concurrently": "^5.2.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "follow-redirects": "^1.11.0",
     "mongodb": "^3.5.5",
+    "multer": "^1.4.2",
     "serialport": "^9.0.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "tmi.js": "^1.5.0",
-    "unirest": "^0.6.0"
+    "unirest": "^0.6.0",
+    "ws": "^7.3.0"
   }
 }

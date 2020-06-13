@@ -1,9 +1,30 @@
+/////////////////////////////////////////////
+// Express Server . JS
+// Description: Routes data from /sendcolordata POST endpoint
+// and then sends it internalcolordata SOCKETIO Channel
+// POST: /sendcolordata
+// REQUIRES:   source - String
+//             username - String
+//             validColor - Boolean
+//             hex - Boolean
+//             color - String
+//             red - Int
+//             green - Int
+//             blue - Int
+//             dateTime - Date Object
+//////////////////////////////////////////////
 'use strict';
+//EVENTS:
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+//EXPRESS RELATED
 const express = require('express');
 const path = require('path')
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const PORT = process.env.PORT || 5000
+const PORT = 5000;
+//SOCKETIO SERVER
+const socketIO = require('socket.io');
 //MONGODB
 // Connection URL
 const url = 'mongodb://localhost:27017';
@@ -29,16 +50,21 @@ const server = express()
   .get('/', (req, res) => res.render('pages/index'))
   .post("/sendcolordata", function(request, response) {
   	console.log("Recieved");
-   	console.log(request.body);
+    console.log(request.body);
     let ModelForDataobjects = { source: request.body.source,
                                 username: request.body.username,
                                 validColor: request.body.validColor,
                                 hex: request.body.hex, 
-                                color: request.body.color, 
+                                color: request.body.color,
+                                red:  request.body.red,
+                                green: request.body.green,
+                                blue: request.body.blue,
                                 dateTime: new Date()
                               };
+    //SOCKET IO Emit Data to the "internalcolordata" channel
+    io.emit('internalcolordata',ModelForDataobjects);
 
-    MongoDB.InsertInto(mongoDB, ModelForDataobjects);
+   // MongoDB.InsertInto(mongoDB, ModelForDataobjects);
 
    	// Save to MongoDB
    	// Write to Arduino
@@ -47,6 +73,14 @@ const server = express()
    // response.status(statusCode);
     response.send(request.body);
 
-  	//Socket io emit on the 'news' event
 })
     .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+
+  var io = socketIO(server);
+
+  io.on('connection', (socket) => {
+    console.log('Client connected');
+    io.send('an event sent to all connected clients');
+    socket.on('disconnect', () => console.log('Client disconnected'));
+  });
