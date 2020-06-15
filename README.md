@@ -32,6 +32,10 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
        - "unirest": "^0.6.0"
 4. Enviroment Variables (LocalNodeJSServer)
     - You will need to create a .env file in your root with the following information:
+        - secretKey = This is for the JWT token authentication. 
+ 
+5. Enviroment Variables (LocalNodeJSServer)
+    - You will need to create a .env file in your root with the following information:
         - BOT_USERNAME= YOUR BOT's TWITCH USERNAME
         - OAUTH_TOKEN= YOUR BOT's OATH TOKEN
         - CHANNEL_NAME= CHANNEL YOU WANT TO BE WATCHING CHAT ON
@@ -59,6 +63,7 @@ Uses CORS and referer checks to block requests not from same origin.
 2. SOCKETIO (/colordata)
     - Emits hex color data. 
     - TODO secure using JWT
+        - Using the JWT will whitelist the localNodeJS server. This is useful if you are using a shared host platform with limited bandwidth or costs with overages. 
 
 ### Local NodeJS Server:
 
