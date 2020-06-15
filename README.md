@@ -52,5 +52,26 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
 
 <img src="https://raw.githubusercontent.com/EdwardDeaver/TwitchChatLightControl/master/Diagrams/Network%20Graph.svg?token=AB2WYELAGSK6LTRCEQXZ7OK65WEA2" width="100%" height="75%">
 
+### External NodeJS Site:
+Uses CORS and referer checks to block requests not from same origin. 
+1. POST ( /colorsubmit)
+    - Site recieves a 6 digit hex value
+2. SOCKETIO (/colordata)
+    - Emits hex color data. 
+    - TODO secure using JWT
+
+### Local NodeJS Server:
+
+1. POST ( /sendcolordata)
+   - source: String - source of the data (ex. Twitch, website)
+   - username: String - username of person who sent the message
+   - validColor: Boolean  - Was it a valid color or not
+   - hex: Boolean  - was it a hex color
+   - color: String - hex color data
+   - red:  Int - Red value of color
+   - green: Int - Green value of color
+   - blue: Blue value of color
+   
+   
 
 
