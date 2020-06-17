@@ -30,9 +30,11 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
        - "socket.io-client": "^2.3.0",
        - "tmi.js": "^1.5.0",
        - "unirest": "^0.6.0"
-4. Enviroment Variables (LocalNodeJSServer)
+4. Enviroment Variables (EXTERNALNodeJSServer)
     - You will need to create a .env file in your root with the following information:
         - secretKey = This is for the JWT token authentication. 
+        - SOCKETIOTOKEN = API TOKEN THAT'S CHECKED WHEN YOU CONNECT TO THE EXTERNAL SERVER.
+
  
 5. Enviroment Variables (LocalNodeJSServer)
     - You will need to create a .env file in your root with the following information:
@@ -42,6 +44,7 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
         - EXT_SERVER= URL OF THE EXTERNAL SERVER YOU ARE RUNNING
         - MONGO_DB= DATA BASE NAME OF MONGO DB
         - INTERNAL_SOCKETIOURL= IP OF INTERNAL SOCKET SERVER, I just use 127.0.0.1 (localhost). 
+        - SOCKETIOTOKEN = API TOKEN THAT'S CHECKED WHEN YOU CONNECT TO THE EXTERNAL SERVER.
 5. Hardware:
    - Arduino Uno
    - 24v RGB analogue LED
