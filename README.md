@@ -101,7 +101,7 @@ Initially I tried to pass the IP address through an AES symmetric crypto but due
 1. POST ( /colorsubmit)(CORS protected)
    - colorHex: String - 6 character hex string
    
-2. SocketIO(
+2. SocketIO(/colordata)(Token protected)
    - "userHash": MD5 of IP ADDRESS,
    - "hexCode": 7 character hex string "#AABBCC" 
        
