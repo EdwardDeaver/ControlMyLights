@@ -79,6 +79,36 @@ Uses CORS and referer checks to block requests not from same origin.
    - red:  Int - Red value of color
    - green: Int - Green value of color
    - blue: Blue value of color
+
+2. SocketIO (/internalcolordata)
+   - source: String - source of the data (ex. Twitch, website)
+   - username: String - username of person who sent the message
+   - validColor: Boolean  - Was it a valid color or not
+   - hex: Boolean  - was it a hex color
+   - color: String - hex color data
+   - red:  Int - Red value of color
+   - green: Int - Green value of color
+   - blue: Blue value of color
+   - date: DateTime value (GMT)
+   
+### External NodeJS Server:
+In order to do analytics after the fact I needed to collect a minimum amount of user data. In this case I wanted to know if it is one person making a lot of actions or a few users. So initially I was going to send IP address that were from the POST request but due to unease about the direct tracking of users and being unsure if I could keep the data private over SocketIO I made a MD5 Hash of the IP Addresses. This way I can still see individual user activity without any identifying information. 
+Initially I tried to pass the IP address through an AES symmetric crypto but due to speed issues I abandoned this idea (the functions were too slow for the post request thread and wouldn't resolve in time).
+
+
+1. POST ( /colorsubmit)(CORS protected)
+   - colorHex: String - 6 character hex string
+   
+2. SocketIO(
+   - "userHash": MD5 of IP ADDRESS,
+   - "hexCode": 7 character hex string "#AABBCC" 
+       
+   
+
+   
+
+
+
    
    
 
