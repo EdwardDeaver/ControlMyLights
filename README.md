@@ -17,7 +17,9 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
        -  "express": "^4.17.1",
        -  "socket.io": "*",
        - "multer": "^1.4.2",
-       - "cors": "2.8.5"
+       - "cors": "2.8.5",
+       - "dotenv": "*",
+       - "md5": "*"
     - LocalNodeJSServer
        - "body-parser": "^1.19.0",
        - "concurrently": "^5.2.0",
