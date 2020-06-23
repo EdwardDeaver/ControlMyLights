@@ -104,8 +104,35 @@ Initially I tried to pass the IP address through an AES symmetric crypto but due
 2. SocketIO(/colordata)(Token protected)
    - "userHash": MD5 of IP ADDRESS,
    - "hexCode": 7 character hex string "#AABBCC" 
+         
+## Analytics 
+### MongoDB datastore ( Any DB can be used, in place of MongoDB a listener just needs to be created)
+#### Gets data from: SocketIO Local /colordata
+This is used to determine endagment rates per user and endagement per platform, as well as what colors were chosen most often. 
+
+Information stored:
+   - source: String - source of the data (ex. Twitch, website)
+   - username: String - username of person who sent the message
+   - validColor: Boolean  - Was it a valid color or not
+   - hex: Boolean  - was it a hex color
+   - color: String - hex color data
+   - red:  Int - Red value of color
+   - green: Int - Green value of color
+   - blue: Blue value of color
+   - date: DateTime value (GMT)
+
+
        
    
+
+   
+
+
+
+   
+   
+
+
 
    
 
