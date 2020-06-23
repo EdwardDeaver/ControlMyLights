@@ -59,7 +59,7 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
 
 (TWITCH SITE  <--SOCKET--> TwitchComponent.  / Website --SOCKETIO(colordata)--> SocketIOListening ) --POST REQ(/sendcolordata)---> ExpressServer ----SOCKETIO (colorData) ---> ( MongoDBListener --WRITE--> MONGODB.  / ArduinoListener --WRITE--> Arduino)
 
-<img src="https://raw.githubusercontent.com/EdwardDeaver/TwitchChatLightControl/master/Diagrams/Network%20Graph.svg?token=AB2WYELAGSK6LTRCEQXZ7OK65WEA2" width="100%" height="75%">
+<img src="https://raw.githubusercontent.com/EdwardDeaver/TwitchChatLightControl/master/Diagrams/Network%20Graph.png?token=AB2WYEJ2P3CK6GVK2A7KRU267OBIG" width="100%" height="75%">
 
 ### External NodeJS Site:
 Uses CORS and referer checks to block requests not from same origin. 
