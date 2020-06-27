@@ -7,6 +7,7 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
 2. Your, well mine, desktop (LocalNodeJSServer)
 3. Your external data sources (youtube, X, Y, Z). 
 4. The Arduino/ Hardware 
+5. Youtube Component 
 
 ## Requirments
 
@@ -47,7 +48,7 @@ Using Twitch Chat to control my lights. This project is built around Message Ori
         - MONGO_DB= DATA BASE NAME OF MONGO DB
         - INTERNAL_SOCKETIOURL= IP OF INTERNAL SOCKET SERVER, I just use 127.0.0.1 (localhost). 
         - SOCKETIOTOKEN = API TOKEN THAT'S CHECKED WHEN YOU CONNECT TO THE EXTERNAL SERVER.
-5. Hardware:
+6. Hardware:
    - Arduino Uno
    - 24v RGB analogue LED
    - MEAN WELL LRS-350-24 350.4W 24V 14.6 Amp PSU (any 24v psu will work)
@@ -92,8 +93,24 @@ Uses CORS and referer checks to block requests not from same origin.
    - green: Int - Green value of color
    - blue: Blue value of color
    - date: DateTime value (GMT)
-   
-### External NodeJS Server:
+
+
+### Youtube Component:
+This is a web scrapping component that uses Selenium to obtain youtube comments. Note this could break at any time. 
+This will send the it's data to ExpressServer. 
+
+1. Pip requirements. 
+   - Requirements:
+      - time
+      - selenium
+      - webdriver_manager
+      - json
+      - re
+      - requests
+      - urllib
+      - pathlib
+
+## External NodeJS Server:
 In order to do analytics after the fact I needed to collect a minimum amount of user data. In this case I wanted to know if it is one person making a lot of actions or a few users. So initially I was going to send IP address that were from the POST request but due to unease about the direct tracking of users and being unsure if I could keep the data private over SocketIO I made a MD5 Hash of the IP Addresses. This way I can still see individual user activity without any identifying information. 
 Initially I tried to pass the IP address through an AES symmetric crypto but due to speed issues I abandoned this idea (the functions were too slow for the post request thread and wouldn't resolve in time).
 
@@ -104,7 +121,8 @@ Initially I tried to pass the IP address through an AES symmetric crypto but due
 2. SocketIO(/colordata)(Token protected)
    - "userHash": MD5 of IP ADDRESS,
    - "hexCode": 7 character hex string "#AABBCC" 
-         
+
+
 ## Analytics 
 ### MongoDB datastore ( Any DB can be used, in place of MongoDB a listener just needs to be created)
 #### Gets data from: SocketIO Local /colordata
