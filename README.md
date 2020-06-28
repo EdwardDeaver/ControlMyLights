@@ -1,6 +1,11 @@
 # TwitchChatLightControl
 Using Twitch Chat to control my lights. This project is built around Message Oriented Middleware model. 
 
+## Purpose:
+
+
+## Running this:
+You absolutly should be running this in a virtual machine. The local server should also run a VPN. 
 ## Distinct Parts of the application:
 
 1. Heroku server (ExternalNodeJSSever)
@@ -95,7 +100,22 @@ Uses CORS and referer checks to block requests not from same origin.
    - date: DateTime value (GMT)
 
 
-### Youtube Component:
+### Twitch Component (NODE JS):
+This component connect to your twitch channels
+
+1. Pip requirements. 
+   - Requirements:
+      - time
+      - selenium
+      - webdriver_manager
+      - json
+      - re
+      - requests
+      - urllib
+      - pathlib
+      
+      
+### Youtube Component (PYTHON):
 This is a web scrapping component that uses Selenium to obtain youtube comments. Note this could break at any time. 
 This will send the it's data to ExpressServer. 
 
