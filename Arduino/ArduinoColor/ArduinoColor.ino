@@ -20,19 +20,41 @@ void setup() {
   }
 
   establishContact();  // send a byte to establish contact until receiver responds
-        colorchangeexample();
 
 }
 
 void loop() {
+/*
+            
+  if (Serial.available() > 0) {
+  String Mdata = Serial.readString(); 
+
+               Serial.println(Mdata);
+                              Serial.println(Mdata[0]);
+
+  }
+*/
   // if we get a valid byte, read analog ins:
   if (Serial.available() > 0) {
-    String Message = Serial.readString(); 
-    if(Message[0] == '#' && Message.length() == 9){
+          String Message = Serial.readString(); 
+               Serial.println(Message[0]);
+               Serial.println(Message[1]);
+               Serial.println(Message[2]);
+               Serial.println(Message[3]);
+
+    if(Message[0] == '#'){
+           Serial.println("red is ");
+               Serial.println(Message);
+
        color = Message.substring(1);
-       convertStringHextoRGB(color);
+       bool resultant = convertStringHextoRGB(color);
+           Serial.println("green is ");
+    Serial.println(Green);
+    Serial.println("blue is ");
+    Serial.println(Blue);
     }
   }
+  
 }
 
 // Conversion from https://stackoverflow.com/questions/23576827/arduino-convert-a-string-hex-ffffff-into-3-int
@@ -41,12 +63,9 @@ bool convertStringHextoRGB(String HexString){
     Red = number >> 16;
     Green = number >> 8 & 0xFF;
     Blue = number & 0xFF;
-    Serial.print("red is ");
+    Serial.println("red is ");
     Serial.println(Red);
-    Serial.print("green is ");
-    Serial.println(Green);
-    Serial.print("blue is ");
-    Serial.println(Blue);
+
     return true;
 }
 

@@ -8,7 +8,8 @@
 	
 	<script src="socket.io.js"></script>
 <script>
-  var socket = io('https://nodejscolorpicker.glitch.me');
+  var myToken = '';
+  var socket = io('https://nodejscolorpicker.glitch.me?token='+myToken);
   socket.on('connect', function(){
       
   });

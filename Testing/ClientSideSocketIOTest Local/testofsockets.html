@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	
+	<script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+	<script src="socket.io.js"></script>
+<script>
+  var myToken = '';
+  var socket = io('http://localhost:5000');
+  socket.on('connect', function(){
+      console.log("CONNECTED");
+  });
+  socket.on('internalcolordata', function(data){
+
+  	console.log(data);
+  });
+  socket.on('disconnect', function(){});
+    
+    
+    
+    
+var source = new EventSource("https://streaming-graph.facebook.com/188752415888615/live_comments?access_token=270996950909699");
+source.onmessage = function(event) {
+    console.log(event);
+  // Do something with event.message for example
+};
+
+</script>
+</body>
+</html>
