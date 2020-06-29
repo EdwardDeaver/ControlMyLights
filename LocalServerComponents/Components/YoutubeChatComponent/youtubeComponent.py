@@ -14,7 +14,7 @@ import hashlib
 import os
 print("os.path.abspath(os.getcwd())")
 print(os.path.abspath(os.getcwd()))
-os.chdir(os.path.abspath(os.getcwd()) + "/YoutubeChatComponent/")  # Provide the new path here
+os.chdir(os.path.abspath(os.getcwd()) + "/Components/YoutubeChatComponent/")  # Provide the new path here
 
 ############################
 ## LOCAL VARIABLES

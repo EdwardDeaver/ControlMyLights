@@ -3,14 +3,14 @@ require('dotenv').config();
 const tmi = require('tmi.js');
 const md5 = require('md5');
 
-const InternalNetworking = require('../InternalMessaging/InternalNetworking');
+const InternalNetworking = require('../../InternalMessaging/InternalNetworking');
 const IntNetworking = new InternalNetworking();
 
-const DataValidation = require('../InputValidation/DataValidation');
+const DataValidation = require('../../InputValidation/DataValidation');
 const DataValidationFunc = new DataValidation();
 
 
-const ColorData = require('../InputValidation/ColorData');
+const ColorData = require('../../InputValidation/ColorData');
 const colorDataInterface = new ColorData();
 
 

@@ -1,15 +1,16 @@
 require('dotenv').config();
 
-const InternalNetworking = require('../InternalMessaging/InternalNetworking');
+const InternalNetworking = require('../../InternalMessaging/InternalNetworking');
 const IntNetworking = new InternalNetworking();
-const DataValidation = require('../InputValidation/DataValidation');
+const DataValidation = require('../../InputValidation/DataValidation');
 const DataValidationFunc = new DataValidation();
-const ColorData = require('../InputValidation/ColorData');
+const ColorData = require('../../InputValidation/ColorData');
 const colorDataInterface = new ColorData();
 const source = "Website";
 const msgUsername = "Website";
 const io = require('socket.io-client');
 const SOCKETENDPOINT = process.env.EXT_SERVER+"?token="+process.env.SOCKETIOTOKEN;
+console.log(SOCKETENDPOINT)
 const socket = io.connect(SOCKETENDPOINT,{secure: true});
  
 

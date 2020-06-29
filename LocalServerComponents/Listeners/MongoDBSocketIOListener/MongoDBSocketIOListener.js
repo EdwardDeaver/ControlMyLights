@@ -5,7 +5,7 @@ require('dotenv').config();
 const url = 'mongodb://localhost:27017';
 const mongoDB = process.env.MONGO_DB;
 // Database Name
-const MongoDBInterface = require('../DatabaseInterface/MongoDBInterface');
+const MongoDBInterface = require('../../DatabaseInterface/MongoDBInterface');
 const MongoDB = new MongoDBInterface(url, mongoDB);
 MongoDB.createCollection(mongoDB);
 //SOCKETIO INTERFACE

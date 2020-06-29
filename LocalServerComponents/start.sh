@@ -8,7 +8,7 @@ echo "//////////////////////////////////////////////"
 
 
 node ExpressServer.js &
-node MongoDBSocketIOListener/MongoDBSocketIOListener.js & 
-node TwitchComponent/TwitchComponent.js &
-node SocketIOWebsiteComponent/SocketIOWebsiteComponent.js &
-python3 YoutubeChatComponent/youtubeComponent.py &
+node Listeners/MongoDBSocketIOListener/MongoDBSocketIOListener.js & 
+node Components/TwitchComponent/TwitchComponent.js &
+node Components/SocketIOWebsiteComponent/SocketIOWebsiteComponent.js &
+python3 Components/YoutubeChatComponent/youtubeComponent.py &
