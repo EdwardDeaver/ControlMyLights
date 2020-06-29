@@ -1,7 +1,7 @@
 {
   "name": "twitchlight",
   "version": "1.0.0",
-  "description": "Twitch bot interface for openframeworks socketio Openframeworks",
+  "description": "Twitch, Youtube, Website control of Arduino",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "mongo-win": "md mongo-db & \"C:/Program Files/MongoDb/Server/3.2/bin/mongod.exe\" --dbpath mongo-db"
   },
   "author": "Edward Deaver",
-  "license": "ISC",
+  "license": "Copyright 2020",
   "dependencies": {
     "body-parser": "^1.19.0",
     "concurrently": "^5.2.0",
