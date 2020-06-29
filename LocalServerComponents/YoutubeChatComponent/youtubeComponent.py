@@ -11,6 +11,10 @@ import urllib.request
 import string
 import hashlib
 #Some code from: https://github.com/TechMaz/youtube-live-chat-scraper/tree/master/app
+import os
+print("os.path.abspath(os.getcwd())")
+print(os.path.abspath(os.getcwd()))
+os.chdir(os.path.abspath(os.getcwd()) + "/YoutubeChatComponent/")  # Provide the new path here
 
 ############################
 ## LOCAL VARIABLES
@@ -24,7 +28,7 @@ TOTALYOUTUBEURL = YoutubeChatURL+YoutubeStreamID
 ## Get colors data
 #####################
 colorFile = ""
-with open('./colors.json') as f:
+with open('colors.json') as f:
   colorFile = json.load(f)
 colorFileKeys = colorFile.keys()
 ######################
