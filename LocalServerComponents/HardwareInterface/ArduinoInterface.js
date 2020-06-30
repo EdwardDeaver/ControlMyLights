@@ -3,10 +3,10 @@ const Readline = require('@serialport/parser-readline');
 
   class ArduinoInterface {
   	constructor(serialPortPath, baudRateAmount) {
-  	  	const this.port = new SerialPort(serialPortPath,{
+  	  	 this.port = new SerialPort(serialPortPath,{
 	 	baudRate: baudRateAmount
 		})
-		const this.parser = port.pipe(new Readline({ delimiter: '\r\n' }))
+		 this.parser = this.port.pipe(new Readline({ delimiter: '\r\n' }))
 	}
 // Takes in hexcode #AABBCC
 //returns 

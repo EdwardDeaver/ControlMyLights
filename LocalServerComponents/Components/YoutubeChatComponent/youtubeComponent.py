@@ -130,12 +130,15 @@ def getDataStuff(startPoint, ColorDataKeys, ColorDataValues):
 
     ##
     for chatMessage in chatData[startingPoint:]:
+        sendToInternal(chatMessage)
+        '''
         print("chatMessage")
         print(chatMessage)
-        '''if("!" in chatMessage["author_name"]):
-            validateColor(chatMessage["message"][1:], ColorDataKeys, ColorDataValues)
+        print("USERNAME " + chatMessage["username"])
+        #if("!" in chatMessage["author_name"]):
+        #    validateColor(chatMessage["message"][1:], ColorDataKeys, ColorDataValues)
 
-        body = {"source": "PYTHON","username": "username","validColor": "True" ,"hex":"False","color":"!red", "red": 255, "green": 0, "blue": 0}
+        body = {"source": "Youtube","username": chatMessage["username"], "validColor": chatMessage["validColor"] ,"hex":chatMessage["hex"],"color": chatMessage["color"], "red": chatMessage["red"], "green": chatMessage["green"], "blue": chatMessage["blue"]}
 
         myurl = "http://localhost:5000/sendcolordata"
         req = urllib.request.Request(myurl)
@@ -150,6 +153,22 @@ def getDataStuff(startPoint, ColorDataKeys, ColorDataValues):
 
     return [len(chatData),chatData] 
 
+def sendToInternal(chatMessage):
+    try:
+        body = {"source": "Youtube","username": chatMessage["username"], "validColor": chatMessage["validColor"] ,"hex":chatMessage["hex"],"color": chatMessage["color"], "red": chatMessage["red"], "green": chatMessage["green"], "blue": chatMessage["blue"]}
+
+        myurl = "http://localhost:5000/sendcolordata"
+        req = urllib.request.Request(myurl)
+        req.add_header('Content-Type', 'application/json; charset=utf-8')
+        jsondata = json.dumps(body)
+        jsondataasbytes = jsondata.encode('utf-8')   # needs to be bytes
+        req.add_header('Content-Length', len(jsondataasbytes))
+        print (jsondataasbytes)
+        response = urllib.request.urlopen(req, jsondataasbytes)
+        print(response)    
+        return response
+    except:
+        return "error"
 
 #######################
 ## getNewestPosition - Gets the newest position of the message
