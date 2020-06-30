@@ -13,6 +13,7 @@ const io = require('socket.io-client');
 const socket = io.connect('http://localhost:5000');
 try{
 	  socket.on('internalcolordata', (data) => {
+	  	
 	  	data["dateTime"] = new Date();
     console.log(data);
     MongoDB.InsertInto(mongoDB, data);

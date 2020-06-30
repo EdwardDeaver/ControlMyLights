@@ -10,7 +10,13 @@ const ArduinoInterface = require('../../HardwareInterface/ArduinoInterface');
 const ArduinoInterfaceFunc = new ArduinoInterface('/dev/cu.usbmodem14101', 9600);
 const ArduinoInterfacePort = ArduinoInterfaceFunc.getPort();
 const ArduinoInterfaceParser = ArduinoInterfaceFunc.getParser();
-
+ArduinoInterfacePort.write('ON', function(err) {
+  if (err) {
+    return console.log('Error on write: ', err.message)
+  }
+  console.log('message writtento arduino 1st time')
+  
+});
 socket.on('connect', function(){
 	console.log("Connected ArduinoInterface");
 });
@@ -18,48 +24,29 @@ socket.on('connect', function(){
 //Listen to messages on the internalcolordataMessage
 // Write the hex data to arduino
 
-	  socket.on('internalcolordata', (data) => {
-	  	console.log("ARDUINO SOKET WRITE")
-	  	data["dateTime"] = new Date();
-    console.log(data);
-    MongoDB.InsertInto(mongoDB, data);
-
-    socket.emit('my other event', { my: 'data' });
-  });
-
-
-socket.on('internalcolordata', function(data){
-		let validatedHEX = DataValidationFunc.validHex("#"+data.color);
-		console.log(validatedHEX);
-
-	try{
-		ArduinoInterfaceFunc.writeToArduino("#"+validatedHEX[1]);	
+socket.on('internalcolordata', (data) => {
+	if(validColor==false && hex==false){
+		console.log("not data");
 	}
-	catch{
-		console.log("error");
+	else{
+		try{
+			console.log("ARDUINO COLOR SOCKET SENT");
+				let validatedHEX = DataValidationFunc.validHex("#"+data.color);
+			console.log(validatedHEX);
+			console.log("TRY ARDUINO WRITE");
+			ArduinoInterfaceFunc.writeToArduino("#"+validatedHEX[1]);	
+		}
+		catch{
+			console.log("error ARDUINO WRITE");
+		}
+	socket.emit('my other event', { my: 'data' });
 	}
-	
-});
-socket.on('disconnect', function(){
-	console.log("SOCKET DISCONNECTED FROM CLIENT")
 });
 
 
 
 
-/*
-
-ArduinoInterfacePort.on('open', function() {
-  ArduinoInterfacePort.write('ON', function(err) {
-  if (err) {
-    return console.log('Error on write: ', err.message)
-  }
-  console.log('message written')
-  
-});
- });
 ArduinoInterfaceParser.on('data', console.log);
 ArduinoInterfaceParser.on('error', console.log);
 
 
-*/

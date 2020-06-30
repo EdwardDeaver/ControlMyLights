@@ -11,6 +11,5 @@ node ExpressServer.js &
 node Components/TwitchComponent/TwitchComponent.js &
 node Components/SocketIOWebsiteComponent/SocketIOWebsiteComponent.js &
 node Listeners/MongoDBSocketIOListener/MongoDBSocketIOListener.js & 
-
-#node Listeners/ArduinoSocketIOListener/ArduinoSocketIOInternal.js &
 python3 Components/YoutubeChatComponent/youtubeComponent.py &
+node Listeners/ArduinoSocketIOListener/ArduinoSocketIOInternal.js &

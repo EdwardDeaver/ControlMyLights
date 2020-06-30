@@ -20,7 +20,7 @@ os.chdir(os.path.abspath(os.getcwd()) + "/Components/YoutubeChatComponent/")  # 
 ## LOCAL VARIABLES
 ############################
 startPoint = 0.0
-YoutubeStreamID = '5frZkc9dFJ0'
+YoutubeStreamID = 'dDUmn5lpC1g'
 YoutubeChatURL  = 'https://www.youtube.com/live_chat?v='
 TOTALYOUTUBEURL = YoutubeChatURL+YoutubeStreamID
 
@@ -46,6 +46,24 @@ def validateColor(Message, ColorDataKeys, ColorDataValues):
     else:
         return False
 print(validateColor("purple", colorFileKeys, colorFile))
+
+
+####################################
+## VALIDATE HEX COLOR
+## If valid: returns hex 
+## if not valid: returns false
+## Message = Message data
+## From: https://stackoverflow.com/questions/1323364/in-python-how-to-check-if-a-string-only-contains-certain-characters
+####################################
+def validateHex(Message, search=re.compile(r'[^a-fA-F0-9.]').search):
+    lengthCorrect = (len(Message) == 6)
+    formatCorrect = not bool(search(Message))
+    if (lengthCorrect == True and formatCorrect == True):
+        print("Valid HEX")
+        return Message
+    else:
+        print("NOT CORRECT")
+        return False
 
 ########################################
 ## CLEAN THE DATA
@@ -89,7 +107,9 @@ def cleanText(Message):
 def getChat(ColorDataKeys, ColorDataValues):
     chats = []
     for chat in driver.find_elements_by_css_selector('yt-live-chat-text-message-renderer'):
+        ## Gets and cleans the username of the commentor and hashes it using MD5, and gets rid of all emojis. 
         username = hashlib.md5(cleanText(chat.find_element_by_css_selector("#author-name").get_attribute('innerHTML').split("<")[0]).encode('utf-8')).hexdigest()
+        ## Gets and cleans the message data of the comment
         message = cleanText(chat.find_element_by_css_selector("#message").get_attribute('innerHTML').split("<")[0])
 
         obj = json.dumps({'username':username, 'color': "null", 'validColor': "False", 'hex': "False", 'red':0, 'green':0, 'blue':0 })
@@ -109,10 +129,28 @@ def getChat(ColorDataKeys, ColorDataValues):
                 hexData  = "False"
                 obj = json.dumps({'username':username, 'color': colorData, 'validColor': validColor, 'hex': hexData, 'red':color[0], 'green':color[1], 'blue':color[2]   })
                 chats.append(json.loads(obj))
-
+                continue
+        #VALIDATE HEX
+        elif("#" in message):
+            colorData = validateHex(message[1:])
+            #print("COLOR DATA FROM CHATS: "+ message)
+            #print("COLOR DATA FROM CHATS: "+ colorData)
+            validColor = "False"
+            hexData  = "False" 
+            if(colorData == False):
+                validColor = "False"
+                hexData  = "False"
+            else:   
+                color = tuple(int(colorData[i:i+2], 16) for i in (0, 2, 4))
+                validColor = "True"
+                hexData  = "True"
+                obj = json.dumps({'username':username, 'color': colorData, 'validColor': validColor, 'hex': hexData, 'red':color[0], 'green':color[1], 'blue':color[2]   })
+                chats.append(json.loads(obj))
+                continue
 
         if(json.loads(obj)['color'] == "null"): 
             chats.append(json.loads(obj))
+            continue
     print("chAT LENGTH " + str(len(chats)))
 
            ## User
