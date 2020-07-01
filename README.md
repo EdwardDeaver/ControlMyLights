@@ -1,6 +1,9 @@
 # TwitchChatLightControl
 Using Twitch Chat to control my lights. This project is built around Message Oriented Middleware model. 
 
+To install the youtube component requirments you must be using Python3 
+pip3 to install the requiremnts
+python to run it
 ## Purpose:
 
 
