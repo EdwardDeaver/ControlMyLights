@@ -16,7 +16,9 @@ const socket = io.connect("http://localhost:5000");
  
 const ArduinoInterface = require('../../HardwareInterface/ArduinoInterface');
 // Defines the Arduino path and BAUD rate
-const ArduinoInterfaceFunc = new ArduinoInterface('/dev/cu.usbmodem14101', 9600);
+//const ArduinoInterfaceFunc = new ArduinoInterface('/dev/cu.usbmodem14101', 9600);
+const ArduinoInterfaceFunc = new ArduinoInterface('COM3', 9600);
+
 const ArduinoInterfacePort = ArduinoInterfaceFunc.getPort();
 const ArduinoInterfaceParser = ArduinoInterfaceFunc.getParser();
 

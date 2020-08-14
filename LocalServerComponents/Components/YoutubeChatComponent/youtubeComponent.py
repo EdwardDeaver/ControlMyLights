@@ -31,7 +31,7 @@ os.chdir(os.path.abspath(os.getcwd()) + "/Components/YoutubeChatComponent/")  # 
 ## LOCAL VARIABLES
 ############################
 startPoint = 0.0
-YoutubeStreamID = 'dDUmn5lpC1g'
+YoutubeStreamID = 'FdyCOMfuiWw'
 YoutubeChatURL  = 'https://www.youtube.com/live_chat?v='
 TOTALYOUTUBEURL = YoutubeChatURL+YoutubeStreamID
 

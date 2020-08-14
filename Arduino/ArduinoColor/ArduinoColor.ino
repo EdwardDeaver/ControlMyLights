@@ -37,10 +37,10 @@ void loop() {
   // if we get a valid byte, read analog ins:
   if (Serial.available() > 0) {
           String Message = Serial.readString(); 
-               Serial.println(Message[0]);
-               Serial.println(Message[1]);
-               Serial.println(Message[2]);
-               Serial.println(Message[3]);
+              // Serial.println(Message[0]);
+             //  Serial.println(Message[1]);
+            //   Serial.println(Message[2]);
+            //   Serial.println(Message[3]);
 
     if(Message[0] == '#'){
            Serial.println("red is ");
@@ -52,6 +52,7 @@ void loop() {
     Serial.println(Green);
     Serial.println("blue is ");
     Serial.println(Blue);
+    writeToRGB(Red, Green,Blue);
     }
   }
   
@@ -90,10 +91,10 @@ void establishContact() {
 }
 
 // Write data to the desired pin
-void writeToRGB(int red, int green, int blue, int RedPin, int GreenPin, int BluePin){
-    analogWrite(RedPin, red);
-    analogWrite(GreenPin, green);
-    analogWrite(GreenPin, blue);
+void writeToRGB(int red, int green, int blue){
+    analogWrite(REDPIN, red);
+    analogWrite(GREENPIN, green);
+    analogWrite(BLUEPIN, blue);
 }
 void colorchangeexample(){
  int r, g, b;
