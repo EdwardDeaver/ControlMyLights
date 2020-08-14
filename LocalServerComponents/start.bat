@@ -1,7 +1,7 @@
 @echo off
 start "RoutingServer" node ExpressServer.js
-start "SocketIOWebsite" node Components\SocketIOWebsiteComponent\SocketIOWebsiteComponent.js
-start "Twitch" node  Components\TwitchComponent\TwitchComponent.js
-start "Mongo" node Listeners\MongoDBSocketIOListener\MongoDBSocketIOListener.js
-start "Youtube" python Components\YoutubeChatComponent\youtubeComponent.py 
-start "Arduino" node Listeners\ArduinoSocketIOListener\ArduinoSocketIOInternal.js
+start "SocketIOWebsite" node ExternalListeners\SocketIOWebsiteComponent\SocketIOWebsiteComponent.js
+start "Twitch" node  ExternalListeners\TwitchComponent\TwitchComponent.js
+start "Mongo" node InternalListeners\MongoDBSocketIOListener\MongoDBSocketIOListener.js
+start "Youtube" python ExternalListeners\YoutubeChatComponent\youtubeComponent.py 
+start "Arduino" node InternalListeners\ArduinoSocketIOListener\ArduinoSocketIOInternal.js
