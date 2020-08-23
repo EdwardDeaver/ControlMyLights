@@ -164,6 +164,16 @@ Initially I tried to pass the IP address through an AES symmetric crypto but due
    - "hexCode": 7 character hex string "#AABBCC" 
 
 
+## ARDUINO SCHEMA
+
+In a previus interation the project would send a string "#00FF00" to the arduino. The the arduino would convert that string to hex values. This preented a memeory error, and I crashed the arduino when I sent it too much data using this. 
+
+Now the code reads color commands like this:
+
+255:255:255    -> R:G:B
+
+Note that the internal messages already have a R/G/B value processed from hex command so this way reduces the work load on th arduino and reduces dynamic memory values. 
+
 ## Analytics 
 ### MongoDB datastore ( Any DB can be used, in place of MongoDB a listener just needs to be created)
 #### Gets data from: SocketIO Local /colordata
