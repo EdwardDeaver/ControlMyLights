@@ -17,7 +17,7 @@ const socket = io.connect("http://localhost:5000");
 const ArduinoInterface = require('../../HardwareInterface/ArduinoInterface');
 // Defines the Arduino path and BAUD rate
 //const ArduinoInterfaceFunc = new ArduinoInterface('/dev/cu.usbmodem14101', 9600);
-const ArduinoInterfaceFunc = new ArduinoInterface('COM3', 9600);
+const ArduinoInterfaceFunc = new ArduinoInterface('COM3', 115200);
 
 const ArduinoInterfacePort = ArduinoInterfaceFunc.getPort();
 const ArduinoInterfaceParser = ArduinoInterfaceFunc.getParser();
@@ -51,26 +51,20 @@ catch(e){
 //////////////////////////////////////////////////////
 try{
 	socket.on('internalcolordata', (data) => {
-		// if it is neither a valid color and not a hex color
-		if(data.validColor==false && data.hex==false){
-			console.log("not data");
-		}
-		// If it is either hex color or a valid color
-		else{
 			try{
 				console.log("ARDUINO COLOR SOCKET SENT");
 				// Validate the hex data again just in case
-				let validatedHEX = DataValidationFunc.validHex("#"+data.color);
+				/*let validatedHEX = DataValidationFunc.validHex("#"+data.color);
 				console.log(validatedHEX);
-				console.log("TRY ARDUINO WRITE");
+				console.log("TRY ARDUINO WRITE"); */
 				// Writes the hex data using the "#" as a marker to the Arduino 
-				ArduinoInterfaceFunc.writeToArduino("#"+validatedHEX[1]);	
+				ArduinoInterfaceFunc.writeToArduino(data.red+":"+data.green+":"+data.blue);	
 			}
 			catch{
 				console.log("error ARDUINO WRITE");
 			}
 		socket.emit('my other event', { my: 'data' });
-		}
+		
 	});
 }
 catch(e){
@@ -80,6 +74,5 @@ catch(e){
 
 // Returns data of the errors and data of the Arduino
 ArduinoInterfaceParser.on('data', console.log);
-ArduinoInterfaceParser.on('error', console.log);
 
 

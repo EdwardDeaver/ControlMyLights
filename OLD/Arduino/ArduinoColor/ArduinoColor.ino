@@ -43,15 +43,15 @@ void loop() {
             //   Serial.println(Message[3]);
 
     if(Message[0] == '#'){
-           Serial.println("red is ");
-               Serial.println(Message);
+       //    Serial.println("red is ");
+       //        Serial.println(Message);
 
        color = Message.substring(1);
        bool resultant = convertStringHextoRGB(color);
-           Serial.println("green is ");
-    Serial.println(Green);
-    Serial.println("blue is ");
-    Serial.println(Blue);
+      //     Serial.println("green is ");
+    //Serial.println(Green);
+    //Serial.println("blue is ");
+    //Serial.println(Blue);
     writeToRGB(Red, Green,Blue);
     }
   }
@@ -64,8 +64,8 @@ bool convertStringHextoRGB(String HexString){
     Red = number >> 16;
     Green = number >> 8 & 0xFF;
     Blue = number & 0xFF;
-    Serial.println("red is ");
-    Serial.println(Red);
+   // Serial.println("red is ");
+   // Serial.println(Red);
 
     return true;
 }
@@ -77,10 +77,10 @@ void writeToScreen (String data){
     int str_len = data.length() + 1; 
     char char_array[str_len];
      data.toCharArray(char_array, str_len);
-     for (int i = 0; i<str_len; i++){
-          Serial.write(char_array[i]);
-     }
-     Serial.write("\n");
+     //for (int i = 0; i<str_len; i++){
+     //     Serial.write(char_array[i]);
+    // }
+     //Serial.write("\n");
 }
 // 
 void establishContact() {
@@ -92,6 +92,9 @@ void establishContact() {
 
 // Write data to the desired pin
 void writeToRGB(int red, int green, int blue){
+    Serial.println(red);
+    Serial.println(green);
+    Serial.println(blue);
     analogWrite(REDPIN, red);
     analogWrite(GREENPIN, green);
     analogWrite(BLUEPIN, blue);

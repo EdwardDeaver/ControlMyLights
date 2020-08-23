@@ -14,6 +14,12 @@
 //             dateTime - Date Object
 //////////////////////////////////////////////
 'use strict';
+
+// QUEUE SYSTEM 
+var Queue = require('bull');
+var colorMessages = new Queue('video transcoding', 'redis://127.0.0.1:6379');
+
+
 //EVENTS:
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
@@ -30,9 +36,9 @@ const socketIO = require('socket.io');
 const url = 'mongodb://localhost:27017';
 const mongoDB = process.env.MONGO_DB;
 // Database Name
-const MongoDBInterface = require('./DatabaseInterface/MongoDBInterface');
-const MongoDB = new MongoDBInterface(url, mongoDB);
-MongoDB.createCollection(mongoDB);
+//const MongoDBInterface = require('./DatabaseInterface/MongoDBInterface');
+//const MongoDB = new MongoDBInterface(url, mongoDB);
+//MongoDB.createCollection(mongoDB);
 //MongoDB.InsertInto("TotalComments", ModelForDataobjects);
 
 
@@ -78,8 +84,9 @@ const server = express()
                                 blue: request.body.blue,
                                 dateTime: new Date()
                               };
+
+                              colorMessages.add(ModelForDataobjects);
     //SOCKET IO Emit Data to the "internalcolordata" channel
-    io.emit('internalcolordata',ModelForDataobjects);
 
    // MongoDB.InsertInto(mongoDB, ModelForDataobjects);
 
@@ -101,3 +108,17 @@ const server = express()
     io.send('an event sent to all connected clients');
     socket.on('disconnect', () => console.log('Client disconnected'));
   });
+
+///////////////////////////////////////////////////////////////////
+// QUEUE 
+///////////////////////////////////////////////////////////////////
+  colorMessages.process(async job => {
+    console.log(job.data);
+    io.emit('internalcolordata',job.data);
+    await sleep(1000);
+
+  })
+  
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }

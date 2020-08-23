@@ -25,7 +25,7 @@ import os
 
 ## Establishes the current directory of the Python file. 
 ## Needed to restablish the path due to calling it from start.sh
-os.chdir(os.path.abspath(os.getcwd()) + "/\ExternalListeners/YoutubeChatComponent/")  # Provide the new path here
+os.chdir(os.path.abspath(os.getcwd()) + "/ExternalListeners/YoutubeChatComponent/")  # Provide the new path here
 
 ############################
 ## LOCAL VARIABLES

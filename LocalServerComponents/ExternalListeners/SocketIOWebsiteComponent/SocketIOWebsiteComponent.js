@@ -22,13 +22,15 @@ socket.on('connect', function(){
 socket.on('colordata', function(data){
 		let hexRaw = data.hexCode;
 		let userID = data.userHash;
+		let hex = data.hex;
+
+		console.log("HEX FROM SOCKETIO" + hex);
 	try{
 		let validatedHEX = DataValidationFunc.validHex(hexRaw);
 		console.log("VALIDATED HEX FILE" + validatedHEX);
 		console.log("Validated hex 1st" + validatedHEX[0]);
 			if(validatedHEX[0]){
 		        validColor = true;
-		        hex = true;
 		        let rgb = colorDataInterface.hexToRgb("#"+validatedHEX[1]);
 		        console.log("REACHED SEND INTERNAL");
 		        IntNetworking.sendInternal(source, userID, validColor, hex, validatedHEX[1], rgb.r, rgb.g, rgb.b);

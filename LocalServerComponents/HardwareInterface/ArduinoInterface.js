@@ -11,7 +11,7 @@ const Readline = require('@serialport/parser-readline');
 // Takes in hexcode #AABBCC
 //returns 
  	writeToArduino(hexCode) {
-		this.port.write(hexCode+'\r\n', function(err) {
+		this.port.write(Buffer.from(hexCode+'\r\n'), function(err) {
   		if (err) {
     		return console.log('Error on write: ', err.message)
   		}
