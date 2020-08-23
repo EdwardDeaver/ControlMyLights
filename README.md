@@ -54,6 +54,7 @@ You absolutly should be running this in a virtual machine. The local server shou
        - "socket.io-client": "^2.3.0",
        - "tmi.js": "^1.5.0",
        - "unirest": "^0.6.0"
+       - "Bull"
 4. Enviroment Variables (EXTERNALNodeJSServer)
     - You will need to create a .env file in your root with the following information:
         - secretKey = This is for the JWT token authentication. 
