@@ -172,7 +172,9 @@ Now the code reads color commands like this:
 
 255:255:255    -> R:G:B
 
-Note that the internal messages already have a R/G/B value processed from hex command so this way reduces the work load on th arduino and reduces dynamic memory values. 
+Note that the internal messages already have a R/G/B value processed from hex command so this way reduces the work load on th arduino and reduces dynamic memory values.
+
+Reference: https://arduino.stackexchange.com/questions/1013/how-do-i-split-an-incoming-string
 
 ## Analytics 
 ### MongoDB datastore ( Any DB can be used, in place of MongoDB a listener just needs to be created)
