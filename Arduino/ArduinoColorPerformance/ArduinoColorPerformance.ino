@@ -6,7 +6,9 @@ void setup() {
   pinMode(GREENPIN, OUTPUT);
   pinMode(BLUEPIN, OUTPUT);
   // put your setup code here, to run once:
-#define INPUT_SIZE 11
+  // Note line fees and carraige return count toward the length of your input size
+  
+#define INPUT_SIZE 14
   // start serial port at 9600 bps:
   // start serial port at 9600 bps:
   Serial.begin(115200);

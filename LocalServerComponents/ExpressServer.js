@@ -111,11 +111,12 @@ const server = express()
 
 ///////////////////////////////////////////////////////////////////
 // QUEUE 
+// queue works at 2 second pause, 1 second pause, trying now 500MS pause
 ///////////////////////////////////////////////////////////////////
   colorMessages.process(async job => {
     console.log(job.data);
     io.emit('internalcolordata',job.data);
-    await sleep(1000);
+    await sleep(500);
 
   })
   
