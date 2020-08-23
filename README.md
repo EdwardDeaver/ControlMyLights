@@ -58,6 +58,10 @@ You absolutly should be running this in a virtual machine. The local server shou
     - You will need to create a .env file in your root with the following information:
         - secretKey = This is for the JWT token authentication. 
         - SOCKETIOTOKEN = API TOKEN THAT'S CHECKED WHEN YOU CONNECT TO THE EXTERNAL SERVER.
+5. Redis for Windows:
+     - Port: 6379
+     - Memory Limit: 8000Mb
+     - https://github.com/tporadowski/redis/releases
 
  
 5. Enviroment Variables (LocalNodeJSServer)
