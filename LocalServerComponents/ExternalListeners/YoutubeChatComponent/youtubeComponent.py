@@ -18,6 +18,7 @@ import requests
 import urllib.request
 import string
 import hashlib
+import  time
 #Some code from: https://github.com/TechMaz/youtube-live-chat-scraper/tree/master/app
 import os
 #print("os.path.abspath(os.getcwd())")
@@ -27,14 +28,49 @@ import os
 ## Needed to restablish the path due to calling it from start.sh
 os.chdir(os.path.abspath(os.getcwd()) + "/ExternalListeners/YoutubeChatComponent/")  # Provide the new path here
 
+
+
 ############################
 ## LOCAL VARIABLES
 ############################
 startPoint = 0.0
-YoutubeStreamID = 'FdyCOMfuiWw'
+YoutubeStreamID = '9N8UkX-pUNA'
 YoutubeChatURL  = 'https://www.youtube.com/live_chat?v='
 TOTALYOUTUBEURL = YoutubeChatURL+YoutubeStreamID
+UserNameTime = {}  # Usernames and times
+timeoutlength = 5 # seconds
+maxSize = 100000
+entryAmount = 0
+#################################################################################
+##                           RATE LIMIT FUNCTIONS                              ## 
+#################################################################################
+# username will be chatMessage["username"]
+# dateObject will be time.time()
+def rateLimitUser(username):
+    cleanData()
+    if username in UserNameTime:
+        timesplit = (time.time() - UserNameTime.get(username))
+        if( timesplit > timeoutlength):
+            UserNameTime[username] = time.time()
+            return True
+        else:
+            return False
+    else:
+        UserNameTime[username] = time.time()
+        entryAmount = len(UserNameTime.keys)
+        return True
 
+
+def cleanData():
+    if entryAmount > maxSize:
+        UserNameTime.clear()
+        return True
+    else:
+        return False
+
+
+
+ 
 
 #################################################################################
 ##                           COLOR FUNCTIONS                                   ## 
@@ -198,7 +234,8 @@ def pointChatData(startPoint):
     startingPoint = startPoint
     chatData = getChat()
     for chatMessage in chatData[startingPoint:]:
-        sendToInternal(chatMessage)
+        if(rateLimitUser(chatMessage["username"])): #rate limit user
+            sendToInternal(chatMessage)  #Send to server
     return [len(chatData),chatData] 
 
 ##################################
