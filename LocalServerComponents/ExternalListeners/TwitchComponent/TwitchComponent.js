@@ -13,8 +13,16 @@ const DataValidationFunc = new DataValidation();
 const ColorData = require('../../InputValidation/ColorData');
 const colorDataInterface = new ColorData();
 
+const RateLimiting = require('../../UserRateLimiting/UserRateLimiting');
+const RateLimitingControl = new RateLimiting(5);
 
 const source = "Twitch";
+
+// Caching and rate limiting
+// Time - 10 second cool down
+// Username - Date objectmessage was sent
+let UserNameTime = new Map(); //Empty Map
+
 
 
 console.log(process.env.BOT_USERNAME);
@@ -66,41 +74,50 @@ function onMessageHandler (target, context, msg, self) {
     let hex = false;
 
     if(command.includes("#")){
+     // rateLimitUser(msgUsername, new Date());
+     let shouldYouLimit = RateLimitingControl.rateLimitUser(msgUsername, new Date());
+     if(shouldYouLimit){
           console.log("MSG has # WILL END");
           console.log("Command fully trimmed", command);
           let validatedHEX = DataValidationFunc.validHex(command);
           if(validatedHEX[0]){
             validColor = true;
             hex = true;
+            console.log("VALID HEX COLOR IF STATEENT");
             let rgb = colorDataInterface.hexToRgb("#"+validatedHEX[1]);
             IntNetworking.sendInternal(source, msgUsername, validColor, hex, validatedHEX[1],rgb.r, rgb.g, rgb.b);
             return true;
           }
           console.log(validatedHEX[0]);
           console.log(validatedHEX[1]);
+     }
 
     }
     if(command.includes("!")){
-          console.log("MSG has ! WILL END");
-          // Looks up colors and will return true/false of ot exists 
-          // in the Map and will continue if true
-          let colorLookupData = colorDataInterface.lookUpColor(command);
-          // If and only if the color exists in our list continue
-          if(colorLookupData[0]){
-              validColor = true;
-              //Send to Express
-              let rgb = colorDataInterface.hexToRgb("#"+colorLookupData[2]);
+      let shouldYouLimit = RateLimitingControl.rateLimitUser(msgUsername, new Date());
+      if(shouldYouLimit){
+        console.log(shouldYouLimit);
+        // Looks up colors and will return true/false of ot exists 
+        // in the Map and will continue if true
+        let colorLookupData = colorDataInterface.lookUpColor(command);
+        // If and only if the color exists in our list continue
+        if(colorLookupData[0]){
+            validColor = true;
+            //Send to Express
+            let rgb = colorDataInterface.hexToRgb("#"+colorLookupData[2]);
 
-              IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2], rgb.r, rgb.g, rgb.b);         
-              return true;
-          }
+            IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2], rgb.r, rgb.g, rgb.b);         
+            return true;
         }
-      validColor = false;
-      hex = false;
-      IntNetworking.sendInternal(source, msgUsername, validColor, hex, "false", 0, 0, 0);
-      return false;         
-    }
-  
+      }
+   // validColor = false;
+   // hex = false;
+    //IntNetworking.sendInternal(source, msgUsername, validColor, hex, "false", 0, 0, 0);
+    return false;         
+  }
+
+      }
+     
 
 
 // Called every time the bot connects to Twitch chat
