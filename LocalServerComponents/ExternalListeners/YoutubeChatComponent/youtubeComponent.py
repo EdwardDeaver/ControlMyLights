@@ -57,7 +57,7 @@ def rateLimitUser(username):
             return False
     else:
         UserNameTime[username] = time.time()
-        entryAmount = len(UserNameTime.keys)
+        entryAmount = len(UserNameTime.keys())
         return True
 
 
