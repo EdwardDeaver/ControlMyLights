@@ -60,27 +60,15 @@ const mongoDB = process.env.MONGO_DB;
 const InternalNetworking = require('./InternalMessaging/InternalNetworking.js');
 const IntNetworking = new InternalNetworking();
 
-
-
-const RedisNetworking = new InternalNetworking();
-let QueueRedisObject = RedisNetworking.getRedisClient();
-
 console.log(getAllMethodNames(IntNetworking));
 let myRedisObject = IntNetworking.getRedisClient();
-myRedisObject.subscribe("notification");
 
 myRedisObject.on("message", function (channel, message) { 
   console.log(message);
   try{
-    let jsonObject =  parse(message);
+    let strJson =  parse(message);
     console.log("REDIS");
-    console.log(jsonObject);
-    console.log("redis from networking with date");
-    jsonObject = IntNetworking.createFinalJSON (jsonObject);
-    console.log(jsonObject);
-    //colorMessages.add(jsonObject);
-  //  let jsonString = Stringify(jsonObject);
-   // console.log("String json" + jsonString);
+    console.log(strJson);
 
   }
   catch(e){
@@ -92,16 +80,13 @@ myRedisObject.on("message", function (channel, message) {
 
 
 }); 
-
-
-
-
- function Stringify(str) {
+async function asyncStringify(str) {
   return JSON.stringify(str);
 }
 function parse(value) {
   return JSON.parse(value);
 }
+  myRedisObject.subscribe("notification");
 
 
 // SETUP FILES
@@ -116,9 +101,6 @@ const server = express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .post("/sendcolordata", function(request, response) {
-
-
-   //console.log("PACKED"+packed);
   	console.log("Recieved");
     console.log(request.body);
     // Deal with PYTHON changing "False" / "True"
@@ -148,15 +130,7 @@ const server = express()
                                 blue: request.body.blue,
                                 dateTime: new Date()
                               };
-                           /*  let myPoppedObject =  QueueRedisObject.lpop(['test-key'], function (err, reply) {
-                                console.log("Popped item",reply);
-                                let parsedJSON = JSON.parse(reply);
-                                console.dir(parsedJSON);
-                                console.log("DAT OBJECT " + new Date(parsedJSON.dateTime));
-                                return reply;
-                            });
-                            console.log("MY POPPED OBJECT" + myPoppedObject);
-                            */
+
                               colorMessages.add(ModelForDataobjects);
     //SOCKET IO Emit Data to the "internalcolordata" channel
 

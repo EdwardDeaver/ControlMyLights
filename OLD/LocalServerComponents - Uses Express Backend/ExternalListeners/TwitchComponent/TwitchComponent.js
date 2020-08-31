@@ -16,8 +16,6 @@ const colorDataInterface = new ColorData();
 const RateLimiting = require('../../UserRateLimiting/UserRateLimiting');
 const RateLimitingControl = new RateLimiting(5, 100000);
 
-
-
 const source = "Twitch";
 
 // Caching and rate limiting
@@ -74,7 +72,7 @@ function onMessageHandler (target, context, msg, self) {
 
     let validColor = false;
     let hex = false;
-    let ModelForDataobjects;
+
     if(command.includes("#")){
      // rateLimitUser(msgUsername, new Date());
      let shouldYouLimit = RateLimitingControl.rateLimitUser(msgUsername, new Date());
@@ -87,26 +85,7 @@ function onMessageHandler (target, context, msg, self) {
             hex = true;
             console.log("VALID HEX COLOR IF STATEENT");
             let rgb = colorDataInterface.hexToRgb("#"+validatedHEX[1]);
-            ModelForDataobjects = {
-							source: source,
-							username: msgUsername,
-							validColor: validColor,
-							hex: hex,
-							color:  validatedHEX[1],
-							red:  rgb.r,
-							green:  rgb.g,
-							blue:  rgb.b,
-							dateTime: new Date()
-						  };
-						//let jsonObject = IntNetworking.createFinalJSON (jsonObject);
-						stringifyJsonObject = JSON.stringify(ModelForDataobjects);
-						//console.log("STRING JSON" +stringifyJsonObject );
-						//console.log("Parsed JSON" +JSON.parse(stringifyJsonObject) );
-
-            IntNetworking.pushToQueue('ExternalMessages', stringifyJsonObject);
-            
-
-            //IntNetworking.sendInternal(source, msgUsername, validColor, hex, validatedHEX[1],rgb.r, rgb.g, rgb.b);
+            IntNetworking.sendInternal(source, msgUsername, validColor, hex, validatedHEX[1],rgb.r, rgb.g, rgb.b);
             return true;
           }
           console.log(validatedHEX[0]);
@@ -126,48 +105,14 @@ function onMessageHandler (target, context, msg, self) {
             validColor = true;
             //Send to Express
             let rgb = colorDataInterface.hexToRgb("#"+colorLookupData[2]);
-            ModelForDataobjects = {
-							source: source,
-							username: msgUsername,
-							validColor: validColor,
-							hex: hex,
-							color: colorLookupData[2],
-							red:  rgb.r,
-							green:  rgb.g,
-							blue:  rgb.b,
-							dateTime: new Date()
-						  };
-						//let jsonObject = IntNetworking.createFinalJSON (jsonObject);
-						stringifyJsonObject = JSON.stringify(ModelForDataobjects);
-						//console.log("STRING JSON" +stringifyJsonObject );
-						//console.log("Parsed JSON" +JSON.parse(stringifyJsonObject) );
 
-            IntNetworking.pushToQueue('ExternalMessages', stringifyJsonObject);
-            //IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2], rgb.r, rgb.g, rgb.b);         
+            IntNetworking.sendInternal(source, msgUsername, validColor, hex, colorLookupData[2], rgb.r, rgb.g, rgb.b);         
             return true;
         }
       }
    validColor = false;
    hex = false;
-
-   ModelForDataobjects = {
-    source: source,
-    username: msgUsername,
-    validColor: validColor,
-    hex: hex,
-    color: "false",
-    red:  rgb.r,
-    green:  rgb.g,
-    blue:  rgb.b,
-    dateTime: new Date()
-    };
-  //let jsonObject = IntNetworking.createFinalJSON (jsonObject);
-  stringifyJsonObject = JSON.stringify(ModelForDataobjects);
-  //console.log("STRING JSON" +stringifyJsonObject );
-  //console.log("Parsed JSON" +JSON.parse(stringifyJsonObject) );
-
-  IntNetworking.pushToQueue('ExternalMessages', stringifyJsonObject);
-  //  IntNetworking.sendInternal(source, msgUsername, validColor, hex, "false", 0, 0, 0);
+    IntNetworking.sendInternal(source, msgUsername, validColor, hex, "false", 0, 0, 0);
     return false;         
   }
 

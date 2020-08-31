@@ -8,11 +8,11 @@
 ///////////////////////////////////////////
 require('dotenv').config();
 
-//const DataValidation = require('../../InputValidation/DataValidation');
-//const DataValidationFunc = new DataValidation();
+const DataValidation = require('../../InputValidation/DataValidation');
+const DataValidationFunc = new DataValidation();
 
-//const io = require('socket.io-client');
-//const socket = io.connect("http://localhost:5000");
+const io = require('socket.io-client');
+const socket = io.connect("http://localhost:5000");
  
 const ArduinoInterface = require('../../HardwareInterface/ArduinoInterface');
 // Defines the Arduino path and BAUD rate
@@ -36,7 +36,6 @@ ArduinoInterfacePort.write('ON', function(err) {
 //////////////////////////////////////////////////////
 // Connects to Express SocketIO SERVER
 //////////////////////////////////////////////////////
-/*
 try{
 	socket.on('connect', function(){
 		console.log("Connected ArduinoInterface");
@@ -45,12 +44,11 @@ try{
 catch(e){
 	console.log(e);
 }
-*/
+
 //////////////////////////////////////////////////////
 // Listes to messages on the 'internalcolordata' Socket IO server
 // Writes the hex data to Arduino
 //////////////////////////////////////////////////////
-/*
 try{
 	socket.on('internalcolordata', (data) => {
 			try{
@@ -60,7 +58,6 @@ try{
 				console.log(validatedHEX);
 				console.log("TRY ARDUINO WRITE"); */
 				// Writes the hex data using the "#" as a marker to the Arduino 
-				/*
 				ArduinoInterfaceFunc.writeToArduino(data.red+":"+data.green+":"+data.blue);	
 			}
 			catch{
@@ -74,49 +71,8 @@ catch(e){
 	console.log(e);
 }
 
-*/
+
 // Returns data of the errors and data of the Arduino
 ArduinoInterfaceParser.on('data', console.log);
 
 
-///////////////////////////////////////////////////////////
-// REDIS IMPORTS
-///////////////////////////////////////////////////////////
-const InternalNetworking = require("../../InternalMessaging/InternalNetworking.js");
-const RedisNetworking = new InternalNetworking();
-let myRedisObject = RedisNetworking.getRedisClient();
-myRedisObject.subscribe("InternalMessages");
-
-myRedisObject.on("message", function (channel, message) { 
-	console.log(message);
-	try{
-	  let jsonObject =  parse(message);
-	  console.log("REDIS");
-	  console.log(jsonObject);
-	  ArduinoInterfaceFunc.writeToArduino(jsonObject.red+":"+jsonObject.green+":"+jsonObject.blue);	
-
-
-	  //colorMessages.add(jsonObject);
-	//  let jsonString = Stringify(jsonObject);
-	 // console.log("String json" + jsonString);
-  
-	}
-	catch(e){
-	  console.log(e);
-  
-	}
-  
-  
-  
-  
-  }); 
-
-
-  
-function Stringify(str) {
-	return JSON.stringify(str);
-  }
-  
-  function parse(value) {
-	return JSON.parse(value);
-  }

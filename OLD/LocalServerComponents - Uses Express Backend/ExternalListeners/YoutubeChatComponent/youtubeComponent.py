@@ -19,10 +19,8 @@ import urllib.request
 import string
 import hashlib
 import  time
-from datetime import datetime
 #Some code from: https://github.com/TechMaz/youtube-live-chat-scraper/tree/master/app
 import os
-import redis
 #print("os.path.abspath(os.getcwd())")
 #print(os.path.abspath(os.getcwd()))
 
@@ -43,8 +41,6 @@ UserNameTime = {}  # Usernames and times
 timeoutlength = 5 # seconds
 maxSize = 100000
 entryAmount = 0
-
-RedisObject = redis.Redis(host='localhost', port=6379, db=0)
 #################################################################################
 ##                           RATE LIMIT FUNCTIONS                              ## 
 #################################################################################
@@ -242,8 +238,7 @@ def pointChatData(startPoint):
         #IF our message is a valid color subject the message to the rate limit before being sent. If it fails the rate limit it won't be sent. If it is not a valid color therefore a normal chat message it will be sent using the false string in the valid color key. 
         if(chatMessage['validColor'] == "True"):
             if(rateLimitUser(chatMessage["username"])): #rate limit user
-                #sendToInternal(chatMessage)  #Send to server
-                sendToRedisPub('ExternalMessages', chatMessage)
+                sendToInternal(chatMessage)  #Send to server
         else:
             sendToInternal(chatMessage) 
     return [len(chatData),chatData] 
@@ -269,31 +264,6 @@ def sendToInternal(chatMessage):
         return response
     except:
         return "error"
-        
-#####################################################
-## SendToRedisQueue 
-## channelName is a String - the queue name
-## chatMessage is a dict object - the chat from YouTube
-## 
-## If it sucessfully pushes to the queue returns true else false
-##
-#####################################################
-def sendToRedisPub(channelName, chatMessage):
-    try:
-        d = datetime.utcnow()
-        timeInMilliseconds = int(time.mktime(d.timetuple())) * 1000
-        print(timeInMilliseconds)
-        body = {"source": "Youtube","username": chatMessage["username"], "validColor": chatMessage["validColor"] ,"hex":chatMessage["hex"],"color": chatMessage["color"], "red": chatMessage["red"], "green": chatMessage["green"], "blue": chatMessage["blue"], "datTime": timeInMilliseconds}
-        body =  json.dumps(body)
-        print(body)
-        #RedisObject.publish(channelName, body)
-        RedisObject.rpush(channelName, body)
-        return True
-    except: # catch *all* exceptions
-        e = sys.exc_info()[0]
-        print(e)
-        return False
-
 
 #######################
 ## getNewestPosition - Gets the newest position of the (last) message
