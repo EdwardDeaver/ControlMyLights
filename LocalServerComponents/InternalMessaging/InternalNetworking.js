@@ -1,5 +1,6 @@
 var unirest = require("unirest");
 var redis = require("redis"); // REDIS MESSAGES
+const { json } = require("body-parser");
 
 var colorPOSTEndpoint = "/sendcolordata";
 var PORT = "5000";
@@ -53,8 +54,14 @@ class InternalNetworking {
   }
 
   createFinalJSON(jsonObject) {
+    console.log("JSON OBJECT");
+    console.log(jsonObject);
     let ModelForDataobjects;
     try {
+      console.log(jsonObject["validColor"]);
+      console.log(jsonObject["hex"]);
+      console.log(jsonObject["dateTime"]);
+
       //   console.log("1");
       if (typeof jsonObject.validColor == "string") {
         //  console.log("2");
@@ -84,6 +91,10 @@ class InternalNetworking {
           jsonObject.hex = true;
         }
       }
+      console.log("DateTIME")
+      if(typeof jsonObject.dateTime == "string"){
+        jsonObject.dateTime = Number(jsonObject.dateTime);
+      }
       // console.log("8");
 
       ModelForDataobjects = {
@@ -111,7 +122,7 @@ class InternalNetworking {
   // keyValue - String value is the key value you want
   // jsonObject - JSON Object you want to send
   // 
-  pushToQueue(keyValue, jsonObject) {
+  async pushToQueue(keyValue, jsonObject) {
     try {
       this.RedisClient.rpush([keyValue, jsonObject], function (err, reply) {
         console.log("Queue Length", reply);

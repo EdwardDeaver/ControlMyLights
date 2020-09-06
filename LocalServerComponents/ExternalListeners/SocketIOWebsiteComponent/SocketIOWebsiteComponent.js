@@ -9,7 +9,6 @@ const DataValidationFunc = new DataValidation();
 const ColorData = require('../../InputValidation/ColorData');
 const colorDataInterface = new ColorData();
 const source = "Website";
-const msgUsername = "Website";
 const io = require('socket.io-client');
 const SOCKETENDPOINT = process.env.EXT_SERVER+"?token="+process.env.SOCKETIOTOKEN;
 console.log(SOCKETENDPOINT)
@@ -18,12 +17,71 @@ const socket = io.connect(SOCKETENDPOINT,{secure: true});
 const RateLimiting = require('../../UserRateLimiting/UserRateLimiting');
 const RateLimitingControl = new RateLimiting(5, 100000);
 
-
+const fastJson = require('fast-json-stringify')
+const stringify = fastJson({
+  title: 'Example Schema',
+  type: 'object',
+  properties: {
+    source: {
+      type: 'string'
+    },
+    username: {
+      type: 'string'
+    },
+    validColor: {
+      type: 'boolean'
+	},
+    hex: {
+      type: 'boolean'
+	},
+    color: {
+      type: 'string'
+	},
+    red: {
+      type: 'integer'
+	},
+    green: {
+		type: 'integer'
+	  },
+	  blue: {
+		type: 'integer'
+	  },
+    dateTime: {
+      type: 'string'
+    }
+  }
+});
 
 socket.on('connect', function(){
 	console.log("Connected");
 });
-socket.on('colordata', function(data){
+socket.on('colordata', async function(data){
+	console.log(data);
+	let PromiseValue = Promise.all([RateLimitingControl.rateLimitUser(data.userHash, new Date()),colorDataInterface.hexToRgb(data.hexCode)]).then(async function(results) {
+		let hex = false;
+		if(data.hex === 'true'){
+			let hex = true;
+		}
+		console.log(results);
+		console.log("STRINGIFY");
+		if( results[0]){
+			stringJSON(source, data.userHash,true,hex,data.hexCode.substr(1), results[1][0], results[1][1], results[1][2]).then(async function(results){
+				console.log(results);
+				return true;
+			})
+			.catch(function(error){
+				console.log(error);
+				return false;
+			})
+		}
+
+	})
+	.catch(function(error){
+		console.log(error);
+		return false;
+	
+	});
+		/*
 		let hexRaw = data.hexCode;
 		let userID = data.userHash;
 		let hex = data.hex;
@@ -63,7 +121,7 @@ socket.on('colordata', function(data){
 						});
 						*/
 //						myRedisObject.rpush('queue:email', JSON.stringify(jsonObject));
-
+/*
 						return true;
 					}
 					else{
@@ -74,6 +132,7 @@ socket.on('colordata', function(data){
 				console.log(e);
 			}
 		}
+		*/
 	
 });
 socket.on('disconnect', function(){
@@ -83,3 +142,20 @@ socket.on('disconnect', function(){
 
 
 
+async  function stringJSON (source,username,validColor,hex,color,red,green,blue)
+{
+	let stringifyJsonObject = stringify({
+		source: source,
+		username: username,
+		validColor: validColor,
+		hex: hex,
+		color:  color,
+		red:  red,
+		green: green,
+		blue: blue,
+		dateTime: new Date().getTime()
+	  });
+	  const wait1 =  IntNetworking.pushToQueue('ExternalMessages', stringifyJsonObject);
+	  return  await wait1;
+
+}

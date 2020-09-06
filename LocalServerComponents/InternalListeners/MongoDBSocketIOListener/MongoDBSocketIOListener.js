@@ -61,9 +61,11 @@ myRedisObject.subscribe("InternalMessages");
 myRedisObject.on("message", function (channel, message) { 
 	console.log(message);
 	try{
-	  let jsonObject =  parse(message);
+	  let jsonObject =  JSON.parse(message);
 	  console.log("REDIS");
 	  console.log(jsonObject);
+	  console.log(typeof jsonObject);
+
 	  console.log("redis from networking with date");
 	  jsonObject = RedisNetworking.createFinalJSON (jsonObject);
 	  console.log("Final object json");

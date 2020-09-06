@@ -17,6 +17,40 @@ const RateLimiting = require('../../UserRateLimiting/UserRateLimiting');
 const RateLimitingControl = new RateLimiting(5, 100000);
 
 
+const fastJson = require('fast-json-stringify')
+const stringify = fastJson({
+  title: 'Example Schema',
+  type: 'object',
+  properties: {
+    source: {
+      type: 'string'
+    },
+    username: {
+      type: 'string'
+    },
+    validColor: {
+      type: 'boolean'
+	},
+    hex: {
+      type: 'boolean'
+	},
+    color: {
+      type: 'string'
+	},
+    red: {
+      type: 'integer'
+	},
+    green: {
+		type: 'integer'
+	  },
+	  blue: {
+		type: 'integer'
+	  },
+    dateTime: {
+      type: 'string'
+    }
+  }
+});
 
 const source = "Twitch";
 
@@ -62,6 +96,87 @@ client.connect();
 function onMessageHandler (target, context, msg, self) {
   if (self) { return; } // Ignore messages from the bot
     //Sanatize message
+    DataValidationFunc.cleanData(msg).then(async function(results){
+     // console.log(results);
+      //console.log(context);
+      // Check it is a command
+      if(results.indexOf("!") == 0 || results.indexOf("#") ==0){
+
+      //  console.log(typeof context.username);
+
+
+        DataValidationFunc.hashToMD5(context.username).then(async function(username){
+          // Check if it is a Hex value
+          if(results[0] === '#'){
+            Promise.all([RateLimitingControl.rateLimitUser(username, new Date()),DataValidationFunc.validHex(results)]).then(async function(messageData) {
+              //console.log(messageData);
+             // if(messageData[0] && messageData[1][0]){
+              if(messageData[0] && messageData[1][0]){
+
+                console.log("before color data interface" + results + "Message Data " + messageData);
+                colorDataInterface.hexToRgb(results).then(async function(RGB){
+                  console.log("VALID RGB " + RGB);
+                  stringJSON (source,username,true,messageData[1][0], messageData[1][1],RGB[0],RGB[1],RGB[2]).then(async function(response){
+                    console.log("MESSAGE FRON STRING JSON" + response);
+                }).catch(function(error){
+                  //console.log(error);
+                  return false;
+                });
+
+                }).catch(function(error){
+                  //console.log(error);
+                  return false;
+                });
+              }
+            }).catch(function(error){
+              //console.log(error);
+              return false;
+            });
+          }
+          //Check if it is a color command
+          if(results[0] === '!'){
+            console.log("! COMMAND");
+            //console.log(colorDataInterface.lookUpColor("green"));
+            results = results.slice(1);
+
+            Promise.all([RateLimitingControl.rateLimitUser(username, new Date()),colorDataInterface.lookUpColor(results)]).then(async function(messageData) {
+              if(messageData[0] && messageData[1][0]){
+                  console.log("before color data interface" + results);
+                  colorDataInterface.hexToRgb(messageData[1][2]).then(async function(RGB){
+                    console.log("VALID RGB " + RGB);
+
+                    stringJSON (source,username,true,false, messageData[1][2],RGB[0],RGB[1],RGB[2][2]).then(async function(response){
+                      console.log("MESSAGE FRON STRING JSON" + response);
+                    }).catch(function(error){
+                      //console.log(error);
+                      return false;
+                    });
+                  })
+                  .catch(function(error){
+                    //console.log(error);
+                    return false;
+                  });
+              }
+              console.log(messageData);
+            }).catch(function(error){
+              //console.log(error);
+              return false;
+            });
+          }
+
+        });
+        console.log("Hellow");
+
+      }
+      console.log(results[0]);
+      console.log(context.username);
+    }).catch(function(error){
+      colorDataInterface.console.log(error);
+      return false;
+    })
+
+
+    /*
     let command =  DataValidationFunc.cleanData(msg);
     let msgContext = JSON.stringify(context);
     console.log(JSON.parse(msgContext).username);
@@ -171,14 +286,58 @@ function onMessageHandler (target, context, msg, self) {
     return false;         
   }
 
-      }
-     
 
+  */
+      }
 
 // Called every time the bot connects to Twitch chat
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`);
 }
+
+
+
+
+
+
+async  function stringJSON (source,username,validColor,hex,color,red,green,blue)
+{
+  try{
+    let stringifyJsonObject = stringify({
+      source: source,
+      username: username,
+      validColor: validColor,
+      hex: hex,
+      color:  color,
+      red:  red,
+      green: green,
+      blue: blue,
+      dateTime:new Date().getTime()
+      });
+      const wait1 =  IntNetworking.pushToQueue('ExternalMessages', stringifyJsonObject);
+      return  await wait1;
+  }
+  catch(error){
+    console.log(error);
+    return false;
+  }
+	
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*

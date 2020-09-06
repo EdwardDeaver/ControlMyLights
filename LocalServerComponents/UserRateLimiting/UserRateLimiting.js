@@ -13,7 +13,7 @@
 // Returns false if the username is in the cache and has a timesplit of less than 10 seconds
 // Returns true if the username is in the cache and has a timesplit of greater than 10 seconds
 
- rateLimitUser(username, dateObject){
+ async rateLimitUser(username, dateObject){
    /* console.log("username: " + username);
     console.log("date Object" + dateObject.getTime());
     console.log("USERNAME IS IN MAP" + this.UserNameTime.has(username));

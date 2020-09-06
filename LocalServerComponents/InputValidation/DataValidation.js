@@ -1,10 +1,12 @@
+var md5 = require('md5');
+
 class DataValidation{
 
 	// Checks if color exists in my list colorLookups
 	// Input: String is from command
 	// Output: Array of results. [X, Y, Z]. X is a boolean (True/False). 
 	// Y is the key value of the colorLookups Map. Z is the value of the key
-	validHex(input){
+	async validHex(input){
 		var ORIGINALINPUT= input;
   		try{
 			if(typeof input === "string"){
@@ -21,20 +23,20 @@ class DataValidation{
 		        	return [true, cleanedInput];
 		        }
 		        else{
-		        	return false;
+		        	return [false, false];
 		        }
 		    }
 		    else{
-		    	return false;
+		    	return  [false, false];
 		    }
-		    return false;
+		    return  [false, false];
 		  }
 		catch{
-			return false;
+			return  [false, false];
 		}  
 	}
 	// Removes All non-standard characters from string input
-	cleanData(input){
+	async cleanData(input){
         if(typeof input === "string"){
 			try{
 				//REMOVE NON-ASCII Characters
@@ -45,12 +47,24 @@ class DataValidation{
 				return input;
 
 			}
-			catch{
-				return null;
+			catch(error){
+				//console.log(error);
+				return false;
 			}
 		}
 		else{
-			return null;
+			return false;
+		}
+	}
+	async hashToMD5(input){
+		if(typeof input === "string"){
+			try{
+				return md5(input);
+			}
+			catch(error){
+				console.log(error);
+				return false;
+			}
 		}
 	}
 }

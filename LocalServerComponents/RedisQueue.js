@@ -48,39 +48,66 @@ function parse(value) {
 // This pushes the data to the publication channel: InternalMessages
 //  
 async function getData() {
+  setInterval(function () { 
+    process.nextTick( () => {
+    QueueRedisObject.lpop(["ExternalMessages"],  function (err, reply) {
+      try {
+        console.log("NEXT TICK LPOP");
+        if (reply !== null) {
+          console.log(reply);
+          IntNetworking.publishRedis("InternalMessages", JSON.parse(reply));
+          return true;
+        }
+      }
+        catch(e){
+          console.log(e);
+          return false;
+        }
+  });
+    });
+
+}, 1); 
+
+  /*
   while (true) {
-    let myPoppedObject = QueueRedisObject.lpop(["ExternalMessages"], function (err, reply) {
+    QueueRedisObject.lpop(["ExternalMessages"],  function (err, reply) {
       try {
         if (reply !== null) {
-          //  console.log("Popped item",reply);
-            let parsedJSON = JSON.parse(reply);
-            console.log("PARSED JSON \n");
-            console.dir(parsedJSON);
-            parsedJSON = IntNetworking.createFinalJSON(parsedJSON);
+         // ;
 
+          //  console.log("Popped item",reply);
+          console.log(reply);
+        //  console.log(reply);
+
+        /*  let parsedJSON = JSON.parse(reply);
+           console.log("PARSED JSON \n");
+           console.dir(parsedJSON);
+           parsedJSON = IntNetworking.createFinalJSON(parsedJSON);
+          console.dir(parsedJSON);
+          */
             ///////////////////////////////////////////
             // get the final json file in order to filter out Python's different false / true booleans.
-            IntNetworking.publishRedis("InternalMessages", parsedJSON);
+          //  IntNetworking.publishRedis("InternalMessages", parsedJSON);
+         // IntNetworking.publishRedis("InternalMessages", reply);
 
           //console.log("DAT OBJECT " + new Date(parsedJSON.dateTime));
-          return reply;
-        }
-      } catch (e) {
+       //   return true;
+      ///  }
+    /*  } catch (e) {
         console.log(e);
+        return false;
       }
     });
-    await sleep(200);
+    await sleep(1);
+    */
     //  console.log("MY POPPED OBJECT" + myPoppedObject);
-  }
+ // }
 }
 ///////////////////////////////////////////////////////////////////
 // QUEUE
 // queue works at 2 second pause, 1 second pause, trying now 500MS pause
 ///////////////////////////////////////////////////////////////////
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 getData();
 
 /* let myRedisObject = IntNetworking.getRedisClient();

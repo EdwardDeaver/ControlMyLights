@@ -280,10 +280,8 @@ def sendToInternal(chatMessage):
 #####################################################
 def sendToRedisPub(channelName, chatMessage):
     try:
-        d = datetime.utcnow()
-        timeInMilliseconds = int(time.mktime(d.timetuple())) * 1000
-        print(timeInMilliseconds)
-        body = {"source": "Youtube","username": chatMessage["username"], "validColor": chatMessage["validColor"] ,"hex":chatMessage["hex"],"color": chatMessage["color"], "red": chatMessage["red"], "green": chatMessage["green"], "blue": chatMessage["blue"], "datTime": timeInMilliseconds}
+
+        body = {"source": "Youtube","username": chatMessage["username"], "validColor": chatMessage["validColor"] ,"hex":chatMessage["hex"],"color": chatMessage["color"], "red": chatMessage["red"], "green": chatMessage["green"], "blue": chatMessage["blue"], "dateTime": time.time()*1000}
         body =  json.dumps(body)
         print(body)
         #RedisObject.publish(channelName, body)
