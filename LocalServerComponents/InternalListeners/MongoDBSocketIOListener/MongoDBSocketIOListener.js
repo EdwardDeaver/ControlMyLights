@@ -61,6 +61,14 @@ myRedisObject.subscribe("InternalMessages");
 myRedisObject.on("message", function (channel, message) { 
 	console.log(message);
 	try{
+		RedisNetworking.createFinalJSON (JSON.parse(message)).then(function(jsonObject){
+			MongoDB.InsertInto(mongoDB, jsonObject);
+			return true;
+		}).catch(function (error) {
+			console.log(error);
+			return false;			
+		});
+	/*	
 	  let jsonObject =  JSON.parse(message);
 	  console.log("REDIS");
 	  console.log(jsonObject);
@@ -71,6 +79,7 @@ myRedisObject.on("message", function (channel, message) {
 	  console.log("Final object json");
 	  console.log( jsonObject);
 	  MongoDB.InsertInto(mongoDB, jsonObject);
+	  */
 
 	  //colorMessages.add(jsonObject);
 	//  let jsonString = Stringify(jsonObject);

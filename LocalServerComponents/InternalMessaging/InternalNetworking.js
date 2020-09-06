@@ -53,7 +53,7 @@ class InternalNetworking {
     return this.RedisClient;
   }
 
-  createFinalJSON(jsonObject) {
+  async createFinalJSON(jsonObject) {
     console.log("JSON OBJECT");
     console.log(jsonObject);
     let ModelForDataobjects;

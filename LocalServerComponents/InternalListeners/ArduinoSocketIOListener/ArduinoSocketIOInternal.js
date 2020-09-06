@@ -33,6 +33,38 @@ ArduinoInterfacePort.write('ON', function(err) {
   
 });
 
+// Returns data of the errors and data of the Arduino
+ArduinoInterfaceParser.on('data', console.log);
+
+
+///////////////////////////////////////////////////////////
+// REDIS IMPORTS
+///////////////////////////////////////////////////////////
+const InternalNetworking = require("../../InternalMessaging/InternalNetworking.js");
+const RedisNetworking = new InternalNetworking();
+let myRedisObject = RedisNetworking.getRedisClient();
+myRedisObject.subscribe("InternalMessages");
+
+myRedisObject.on("message", function (channel, message) { 
+	console.log(message);
+	try{
+	  let jsonObject =  parse(message);
+	  console.log("REDIS");
+	  console.log(jsonObject);
+	  ArduinoInterfaceFunc.writeToArduino(jsonObject.red+":"+jsonObject.green+":"+jsonObject.blue);	
+	}
+	catch(e){
+	  console.log(e);
+	}
+  }); 
+function Stringify(str) {
+	return JSON.stringify(str);
+  }
+  
+  function parse(value) {
+	return JSON.parse(value);
+  }
+
 //////////////////////////////////////////////////////
 // Connects to Express SocketIO SERVER
 //////////////////////////////////////////////////////
@@ -75,48 +107,3 @@ catch(e){
 }
 
 */
-// Returns data of the errors and data of the Arduino
-ArduinoInterfaceParser.on('data', console.log);
-
-
-///////////////////////////////////////////////////////////
-// REDIS IMPORTS
-///////////////////////////////////////////////////////////
-const InternalNetworking = require("../../InternalMessaging/InternalNetworking.js");
-const RedisNetworking = new InternalNetworking();
-let myRedisObject = RedisNetworking.getRedisClient();
-myRedisObject.subscribe("InternalMessages");
-
-myRedisObject.on("message", function (channel, message) { 
-	console.log(message);
-	try{
-	  let jsonObject =  parse(message);
-	  console.log("REDIS");
-	  console.log(jsonObject);
-	  ArduinoInterfaceFunc.writeToArduino(jsonObject.red+":"+jsonObject.green+":"+jsonObject.blue);	
-
-
-	  //colorMessages.add(jsonObject);
-	//  let jsonString = Stringify(jsonObject);
-	 // console.log("String json" + jsonString);
-  
-	}
-	catch(e){
-	  console.log(e);
-  
-	}
-  
-  
-  
-  
-  }); 
-
-
-  
-function Stringify(str) {
-	return JSON.stringify(str);
-  }
-  
-  function parse(value) {
-	return JSON.parse(value);
-  }
