@@ -1,6 +1,15 @@
+///////////////////////////////////////////
+// Internal Networking Class
+// Contains all operations relating to and supporting internal networking infrustructure
+// Created by: Edward C. Deaver, IV
+// Last Modified: September 6, 2020
+// Requires: Redis Server
+//           unirest package
+//           fast-json-stringify 
+///////////////////////////////////////////
+
 var unirest = require("unirest");
 var redis = require("redis"); // REDIS MESSAGES
-const { json } = require("body-parser");
 const fastJson = require('fast-json-stringify');
 const stringify = fastJson({
   title: 'Example Schema',
@@ -39,9 +48,17 @@ var colorPOSTEndpoint = "/sendcolordata";
 var PORT = "5000";
 var COLORENDPOINT = "localhost:" + PORT + colorPOSTEndpoint;
 class InternalNetworking {
+  // On creation of class object create new Redis Client
   constructor() {
     this.RedisClient = redis.createClient();
   }
+  ///////////////////////////////////////////////////
+  // sendInternal - Deprecated function - was used to send Post request to original ExpressJS routing server
+  // source/username = Strings
+  // validColor/hex = Booleans
+  // color = String
+  // r/g/b = Number
+  ///////////////////////////////////////////////////
   sendInternal(source, username, validColor, hex, color, r, g, b) {
     try {
       var req = unirest("POST", "http://localhost:5000/sendcolordata")
@@ -69,14 +86,12 @@ class InternalNetworking {
   ///////////////////////////////////////////////////
   // publishRedis - functon that pushed json data over a specified channel name
   // channelName - String - Channel to publish on 
-  // jsonObject - JSON Object - the json p
+  // jsonObject - STRING JSON Object - data you want sent 
+  // Returns Boolean - True if success - False if faild
+  ///////////////////////////////////////////////////
   publishRedis(channelName, jsonObject) {
     try {
-      /* console.log("publishRedis jsonObject" + jsonObject);
-      let dataJSON = JSON.stringify(jsonObject);
-      console.log("Stringify json" + dataJSON);
-           */
-      console.log(jsonObject);
+     // console.log(jsonObject);
       this.RedisClient.publish(channelName, jsonObject, function () {
         return true;
       });
@@ -85,16 +100,23 @@ class InternalNetworking {
     } catch (e) {
       console.log(e);
       return false;
-    } finally {
-      return false;
-    }
+    } 
   }
   ///////////////////////////////////////////////////
   // getRedisClient - functions returns the class' Redis Client
   // Returns = the Redis client object
   ///////////////////////////////////////////////////
   getRedisClient() {
-    return this.RedisClient;
+    try{
+      console.log("in Try");
+      console.log(this.RedisClient);
+      return this.RedisClient;
+
+    }
+    catch(e){
+      console.log(e);
+      return false;
+    }
   }
 
   ///////////////////////////////////////////////////

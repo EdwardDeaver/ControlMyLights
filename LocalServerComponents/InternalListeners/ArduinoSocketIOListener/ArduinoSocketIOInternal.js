@@ -52,7 +52,9 @@ ArduinoInterfaceParser.on('data', console.log);
 
 
 
-
+///////////////////////////////////////////////////////////
+// On message do this
+///////////////////////////////////////////////////////////
 myRedisObject.on("message", function (channel, message) { 
 	//console.log(message);
 	try{

@@ -1,20 +1,30 @@
+///////////////////////////////////////////
+// ColorData  Class
+// Deals with all things color
+// Created by: Edward C. Deaver, IV
+// Last Modified: September 6, 2020
+// Requires: colors json in root of project  
+///////////////////////////////////////////
+
 var fs = require('fs');
 process.chdir(__dirname);
 
 class ColorData{
+	///////////////////////////////////////////
+	// Reads the color data list as json to colorLookups
+	// colorKeys - key  array from the colors, which is the list of color commands. 
+	///////////////////////////////////////////
 	constructor(){
 		this.colorLookups = JSON.parse(fs.readFileSync('./colors.json', 'utf8'));
 		this.colorKeys = Object.keys(this.colorLookups);
 	}
-	// Checks if color exists in my list colorLookups
-	// Input: String is from command
-	// Output: Array of results. [X, Y, Z]. X is a boolean (True/False). 
-	// Y is the key value of the colorLookups Map. Z is the value of the key
+
+	///////////////////////////////////////////
+	// lookUpColor - function - gets hex value of color from list 
+	// Input - String - Color command
+	// Return value - Array -  [X, Y, Z]. X is a boolean (True/False). Y is the key value of the colorLookups Map. Z is the value of the key.
+	///////////////////////////////////////////
 	lookUpColor(input){
-		// Note this orgininally was going to be a map object. It was very fast
-		// After switchingt to a JSON is was really slow using the origninal for loop method to check if the color existsed in it
-		// So I replaced it with a includes lookup on the keys value. Much faster now!
-		// !lime resulted in an almost stalling application. It took ~10 seconds to retrieve the data. Now it takes <1 second.
 		try{
 			input = input.toLowerCase(); 
 			if(this.colorKeys.indexOf(input) == -1){
@@ -25,7 +35,6 @@ class ColorData{
 			}
 		}
 		catch(error){
-			//console.log(error);
 			return [false, false, false];
 		}
 
@@ -46,10 +55,14 @@ class ColorData{
 		
 		*/
 	}
+	///////////////////////////////////////////
+	// hexToRgb - function - converts hex string to rgb array
+	// hex - String - hex string without pound sign
+	// Return value - Array [R,G,B] - All values are ints parsed at base 16. 
 	// Sourced from user Tim Down on https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+	///////////////////////////////////////////
 	async hexToRgb(hex) {
 		try{
-
 			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 			if(result == null){
 				throw "result is null";

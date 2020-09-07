@@ -1,11 +1,20 @@
+///////////////////////////////////////////
+// Data Validation  Class
+// Validates data and cleans data
+// Created by: Edward C. Deaver, IV
+// Last Modified: September 6, 2020
+// Requires: md5 package  
+///////////////////////////////////////////
+
+
 var md5 = require('md5');
 
 class DataValidation{
-
-	// Checks if color exists in my list colorLookups
-	// Input: String is from command
-	// Output: Array of results. [X, Y, Z]. X is a boolean (True/False). 
-	// Y is the key value of the colorLookups Map. Z is the value of the key
+	///////////////////////////////////////////
+	// validHex - function - Checks if hex string is a valid hex string
+	// input - String - Hex string input
+	// Return value - [Boolean, String] - Boolean is it a valid hex / String what is the value of hex String 
+	///////////////////////////////////////////
 	async validHex(input){
 		var ORIGINALINPUT= input;
   		try{
@@ -19,7 +28,7 @@ class DataValidation{
 		        // Check if the string is 7 characters
 		        if(cleanedInput.length==6 && ORIGINALINPUT[0] ==="#"){
 		              console.log("correct length");
-		              //check if first character is a pound symbke
+		              //check if first character is a pound symbol
 		        	return [true, cleanedInput];
 		        }
 		        else{
@@ -35,7 +44,11 @@ class DataValidation{
 			return  [false, false];
 		}  
 	}
-	// Removes All non-standard characters from string input
+	///////////////////////////////////////////
+	// cleanDate - function - Removes All non-standard characters from string input
+	// input - String - data you want cleaned
+	// Return value - cleaned String
+	///////////////////////////////////////////
 	async cleanData(input){
         if(typeof input === "string"){
 			try{
@@ -56,6 +69,11 @@ class DataValidation{
 			return false;
 		}
 	}
+	///////////////////////////////////////////
+	// hashToMD5 - function - runs an md5 hash on text
+	// input - String - text input
+	// Return value - String - md5 hash of input
+	///////////////////////////////////////////
 	async hashToMD5(input){
 		if(typeof input === "string"){
 			try{

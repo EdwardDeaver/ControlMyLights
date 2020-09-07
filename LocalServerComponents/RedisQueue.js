@@ -1,8 +1,8 @@
 /////////////////////////////////////////////
 // Redis Queue . JS
 // Description: Pops data from the ExternalMessages queue in Redis, then sends it to ExternalMessages subscribers
-// REQUIRES:   (2x) InternalNetworking
-//             
+// REQUIRES:   Redis Server running
+//             (2x) InternalNetworking
 //             source - String
 //             username - String
 //             validColor - Boolean
@@ -15,11 +15,6 @@
 //////////////////////////////////////////////
 "use strict";
 
-//////////////////////////////////////////////////
-
-//REDIS SUB
-
-////////////////////////////////////////////////////
 
 const InternalNetworking = require("./InternalMessaging/InternalNetworking.js");
 const IntNetworking = new InternalNetworking();
@@ -27,46 +22,30 @@ const IntNetworking = new InternalNetworking();
 const RedisNetworking = new InternalNetworking();
 let QueueRedisObject = RedisNetworking.getRedisClient();
 
-
-function Stringify(str) {
-  return JSON.stringify(str);
-}
-
-function parse(value) {
-  return JSON.parse(value);
-}
-
-// SETUP FILES
-//////////////
-// Post: Description :  Creates a Post request end point for data. The data sent in is then verified. If successfully verified it is sent to the socket io client.
-//     Pre-conditions: NodeJS has the key stored as an environment variable.
-//     Post-conditions: Connection is closed.
-
-
 ///////////////////////////////////////////////////////////
-// getData - Async function that Pops messages from the queue
-// This pushes the data to the publication channel: InternalMessages
-//  
+// getData - Async function -  Pops messages from the ExternalMessages queue and publishes them to the InternalMessages channel
+///////////////////////////////////////////////////////////
 async function getData() {
   setInterval(function () { 
-    process.nextTick( () => {
     QueueRedisObject.lpop(["ExternalMessages"],  function (err, reply) {
       try {
         console.log("NEXT TICK LPOP");
         if (reply !== null) {
           console.log(reply);
-          IntNetworking.publishRedis("InternalMessages", JSON.parse(reply));
+          console.log(IntNetworking.publishRedis("InternalMessages", reply));
           return true;
         }
       }
-        catch(e){
-          console.log(e);
-          return false;
-        }
-  });
+      catch(e){
+        console.log(e);
+        return false;
+      }
     });
+  }, 250); 
+}
 
-}, 1); 
+getData();
+
 
   /*
   while (true) {
@@ -102,13 +81,13 @@ async function getData() {
     */
     //  console.log("MY POPPED OBJECT" + myPoppedObject);
  // }
-}
+
 ///////////////////////////////////////////////////////////////////
 // QUEUE
 // queue works at 2 second pause, 1 second pause, trying now 500MS pause
 ///////////////////////////////////////////////////////////////////
 
-getData();
+
 
 /* let myRedisObject = IntNetworking.getRedisClient();
 myRedisObject.subscribe("notification");

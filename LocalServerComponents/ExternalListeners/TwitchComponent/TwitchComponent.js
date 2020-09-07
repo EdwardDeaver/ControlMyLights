@@ -1,7 +1,17 @@
+///////////////////////////////////////////
+// Twitch Component 
+// Gets Twitch chat
+// Created by: Edward C. Deaver, IV
+// Last Modified: September 6, 2020
+// Requires: Oath key in ENV file is correct
+//           TMI package
+//           InternalNetworking
+//           ColorData
+//           userRatelimiting
+///////////////////////////////////////////
 require('dotenv').config();
 
 const tmi = require('tmi.js');
-const md5 = require('md5');
 
 const InternalNetworking = require('../../InternalMessaging/InternalNetworking');
 const IntNetworking = new InternalNetworking();
@@ -57,7 +67,7 @@ function onMessageHandler (target, context, msg, self) {
 
       //  console.log(typeof context.username);
 
-
+        // Hashes username variable
         DataValidationFunc.hashToMD5(context.username).then(async function(username){
           // Check if it is a Hex value
           if(results[0] === '#'){
@@ -95,9 +105,6 @@ function onMessageHandler (target, context, msg, self) {
           //Check if it is a color command
           if(results[0] === '!'){
             console.log("! COMMAND");
-            //console.log(colorDataInterface.lookUpColor("green"));
-           // results = results.slice(1);
-
             Promise.all([RateLimitingControl.rateLimitUser(username, new Date()),colorDataInterface.lookUpColor(results)]).then(async function(messageData) {
               if(messageData[0] && messageData[1][0]){
              //     console.log("before color data interface" + results);
@@ -140,7 +147,16 @@ function onMessageHandler (target, context, msg, self) {
       return false;
     })
 
+      }
 
+// Called every time the bot connects to Twitch chat
+function onConnectedHandler (addr, port) {
+  console.log(`* Connected to ${addr}:${port}`);
+}
+
+
+/* 
+OLD CODE: 
     /*
     let command =  DataValidationFunc.cleanData(msg);
     let msgContext = JSON.stringify(context);
@@ -253,32 +269,6 @@ function onMessageHandler (target, context, msg, self) {
 
 
   */
-      }
-
-// Called every time the bot connects to Twitch chat
-function onConnectedHandler (addr, port) {
-  console.log(`* Connected to ${addr}:${port}`);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 BACKUP OF OLD MESSAGE CODE 
 
