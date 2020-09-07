@@ -16,48 +16,8 @@ const colorDataInterface = new ColorData();
 const RateLimiting = require('../../UserRateLimiting/UserRateLimiting');
 const RateLimitingControl = new RateLimiting(5, 100000);
 
-
-const fastJson = require('fast-json-stringify')
-const stringify = fastJson({
-  title: 'Example Schema',
-  type: 'object',
-  properties: {
-    source: {
-      type: 'string'
-    },
-    username: {
-      type: 'string'
-    },
-    validColor: {
-      type: 'boolean'
-	},
-    hex: {
-      type: 'boolean'
-	},
-    color: {
-      type: 'string'
-	},
-    red: {
-      type: 'integer'
-	},
-    green: {
-		type: 'integer'
-	  },
-	  blue: {
-		type: 'integer'
-	  },
-    dateTime: {
-      type: 'string'
-    }
-  }
-});
-
 const source = "Twitch";
 
-// Caching and rate limiting
-// Time - 10 second cool down
-// Username - Date objectmessage was sent
-let UserNameTime = new Map(); //Empty Map
 console.log(process.env.BOT_USERNAME);
 // Define configuration options
 const opts = {
