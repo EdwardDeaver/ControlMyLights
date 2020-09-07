@@ -1,26 +1,40 @@
 ///////////////////////////////////////////
-// Arduino SOCKET LISTENER
-// Listens to SocketIO and writes the data to a Arduino
+// Arduino REDIS LISTENER
+// Listens to REDIS Channel - InternalMessages and writes the data to a Arduino
 // Created by: Edward C. Deaver, IV
-// Last Modified: June 30, 2020
+// Last Modified: September 6, 2020
 // Requires: Arduino connected to computer
-//           Express server running
+//          Redis Server
 ///////////////////////////////////////////
 require('dotenv').config();
 
-//const DataValidation = require('../../InputValidation/DataValidation');
-//const DataValidationFunc = new DataValidation();
 
-//const io = require('socket.io-client');
-//const socket = io.connect("http://localhost:5000");
- 
+///////////////////////////////////////////////////////////
+// Arduino imports 
+///////////////////////////////////////////////////////////
 const ArduinoInterface = require('../../HardwareInterface/ArduinoInterface');
-// Defines the Arduino path and BAUD rate
-//const ArduinoInterfaceFunc = new ArduinoInterface('/dev/cu.usbmodem14101', 9600);
 const ArduinoInterfaceFunc = new ArduinoInterface('COM3', 115200);
-
+// For MAC use:
+//const ArduinoInterfaceFunc = new ArduinoInterface('/dev/cu.usbmodem14101', 115200);
 const ArduinoInterfacePort = ArduinoInterfaceFunc.getPort();
 const ArduinoInterfaceParser = ArduinoInterfaceFunc.getParser();
+
+///////////////////////////////////////////////////////////
+// REDIS IMPORTS
+///////////////////////////////////////////////////////////
+const InternalNetworking = require("../../InternalMessaging/InternalNetworking.js");
+const RedisNetworking = new InternalNetworking();
+let myRedisObject = RedisNetworking.getRedisClient();
+myRedisObject.subscribe("InternalMessages");
+
+
+
+//const DataValidation = require('../../InputValidation/DataValidation');
+//const DataValidationFunc = new DataValidation();
+//const io = require('socket.io-client');
+//const socket = io.connect("http://localhost:5000");
+// Defines the Arduino path and BAUD rate
+
 
 //////////////////////////////////////////////////////
 // This write initializes the Arduino Port
@@ -37,29 +51,21 @@ ArduinoInterfacePort.write('ON', function(err) {
 ArduinoInterfaceParser.on('data', console.log);
 
 
-///////////////////////////////////////////////////////////
-// REDIS IMPORTS
-///////////////////////////////////////////////////////////
-const InternalNetworking = require("../../InternalMessaging/InternalNetworking.js");
-const RedisNetworking = new InternalNetworking();
-let myRedisObject = RedisNetworking.getRedisClient();
-myRedisObject.subscribe("InternalMessages");
+
 
 myRedisObject.on("message", function (channel, message) { 
-	console.log(message);
+	//console.log(message);
 	try{
 	  let jsonObject =  parse(message);
-	  console.log("REDIS");
-	  console.log(jsonObject);
+	  //console.log("REDIS");
+	  //console.log(jsonObject);
 	  ArduinoInterfaceFunc.writeToArduino(jsonObject.red+":"+jsonObject.green+":"+jsonObject.blue);	
 	}
 	catch(e){
 	  console.log(e);
 	}
   }); 
-function Stringify(str) {
-	return JSON.stringify(str);
-  }
+
   
   function parse(value) {
 	return JSON.parse(value);

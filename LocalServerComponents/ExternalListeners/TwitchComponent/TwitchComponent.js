@@ -58,14 +58,7 @@ const source = "Twitch";
 // Time - 10 second cool down
 // Username - Date objectmessage was sent
 let UserNameTime = new Map(); //Empty Map
-
-
-
 console.log(process.env.BOT_USERNAME);
-
-
-
-
 // Define configuration options
 const opts = {
     options: { debug: true },
@@ -115,9 +108,15 @@ function onMessageHandler (target, context, msg, self) {
 
                 console.log("before color data interface" + results + "Message Data " + messageData);
                 colorDataInterface.hexToRgb(results).then(async function(RGB){
-                  console.log("VALID RGB " + RGB);
-                  stringJSON (source,username,true,messageData[1][0], messageData[1][1],RGB[0],RGB[1],RGB[2]).then(async function(response){
-                    console.log("MESSAGE FRON STRING JSON" + response);
+                  //console.log("VALID RGB " + RGB);
+                  IntNetworking.stringJSON (source,username,true,messageData[1][0], messageData[1][1],RGB[0],RGB[1],RGB[2]).then(async function(response){
+                    IntNetworking.pushToQueue('ExternalMessages', response).then(function (success){
+                      return success;
+                    }).catch(function (error){
+                      console.log(error);
+                      return false;
+                    });
+                   // console.log("MESSAGE FRON STRING JSON" + response);
                 }).catch(function(error){
                   //console.log(error);
                   return false;
@@ -137,16 +136,22 @@ function onMessageHandler (target, context, msg, self) {
           if(results[0] === '!'){
             console.log("! COMMAND");
             //console.log(colorDataInterface.lookUpColor("green"));
-            results = results.slice(1);
+           // results = results.slice(1);
 
             Promise.all([RateLimitingControl.rateLimitUser(username, new Date()),colorDataInterface.lookUpColor(results)]).then(async function(messageData) {
               if(messageData[0] && messageData[1][0]){
-                  console.log("before color data interface" + results);
+             //     console.log("before color data interface" + results);
                   colorDataInterface.hexToRgb(messageData[1][2]).then(async function(RGB){
-                    console.log("VALID RGB " + RGB);
+                    //console.log("VALID RGB " + RGB);
 
-                    stringJSON (source,username,true,false, messageData[1][2],RGB[0],RGB[1],RGB[2][2]).then(async function(response){
-                      console.log("MESSAGE FRON STRING JSON" + response);
+                    IntNetworking.stringJSON (source,username,true,false, messageData[1][2],RGB[0],RGB[1],RGB[2][2]).then(async function(response){
+                      //console.log("MESSAGE FRON STRING JSON" + response);
+                      IntNetworking.pushToQueue('ExternalMessages', response).then(function (success){
+                        return success;
+                      }).catch(function (error){
+                        console.log(error);
+                        return false;
+                      });
                     }).catch(function(error){
                       //console.log(error);
                       return false;
@@ -157,7 +162,7 @@ function onMessageHandler (target, context, msg, self) {
                     return false;
                   });
               }
-              console.log(messageData);
+              //console.log(messageData);
             }).catch(function(error){
               //console.log(error);
               return false;
@@ -168,10 +173,10 @@ function onMessageHandler (target, context, msg, self) {
         console.log("Hellow");
 
       }
-      console.log(results[0]);
-      console.log(context.username);
+     // console.log(results[0]);
+     // console.log(context.username);
     }).catch(function(error){
-      colorDataInterface.console.log(error);
+    //  colorDataInterface.console.log(error);
       return false;
     })
 
@@ -298,32 +303,6 @@ function onConnectedHandler (addr, port) {
 
 
 
-
-
-async  function stringJSON (source,username,validColor,hex,color,red,green,blue)
-{
-  try{
-    let stringifyJsonObject = stringify({
-      source: source,
-      username: username,
-      validColor: validColor,
-      hex: hex,
-      color:  color,
-      red:  red,
-      green: green,
-      blue: blue,
-      dateTime:new Date().getTime()
-      });
-      const wait1 =  IntNetworking.pushToQueue('ExternalMessages', stringifyJsonObject);
-      return  await wait1;
-  }
-  catch(error){
-    console.log(error);
-    return false;
-  }
-	
-
-}
 
 
 

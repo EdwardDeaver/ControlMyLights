@@ -65,7 +65,15 @@ socket.on('colordata', async function(data){
 		console.log(results);
 		console.log("STRINGIFY");
 		if( results[0]){
-			stringJSON(source, data.userHash,true,hex,data.hexCode.substr(1), results[1][0], results[1][1], results[1][2]).then(async function(results){
+			IntNetworking.stringJSON(source, data.userHash,true,hex,data.hexCode.substr(1), results[1][0], results[1][1], results[1][2]).then(async function(results){
+				IntNetworking.pushToQueue('ExternalMessages', results).then(function (success){
+					return success;
+
+				}).catch(function (error){
+					console.log(error);
+					return false;
+				});
+				//return  await wait1;
 				console.log(results);
 				return true;
 			})
@@ -140,22 +148,3 @@ socket.on('disconnect', function(){
 });
 
 
-
-
-async  function stringJSON (source,username,validColor,hex,color,red,green,blue)
-{
-	let stringifyJsonObject = stringify({
-		source: source,
-		username: username,
-		validColor: validColor,
-		hex: hex,
-		color:  color,
-		red:  red,
-		green: green,
-		blue: blue,
-		dateTime: new Date().getTime()
-	  });
-	  const wait1 =  IntNetworking.pushToQueue('ExternalMessages', stringifyJsonObject);
-	  return  await wait1;
-
-}
