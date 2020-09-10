@@ -105,13 +105,15 @@ function onMessageHandler (target, context, msg, self) {
           //Check if it is a color command
           if(results[0] === '!'){
             console.log("! COMMAND");
-            Promise.all([RateLimitingControl.rateLimitUser(username, new Date()),colorDataInterface.lookUpColor(results)]).then(async function(messageData) {
+            let colorText = results.slice(1);
+            Promise.all([RateLimitingControl.rateLimitUser(username, new Date()),colorDataInterface.lookUpColor(colorText)]).then(async function(messageData) {
+                console.log("Message data " + messageData);
               if(messageData[0] && messageData[1][0]){
              //     console.log("before color data interface" + results);
                   colorDataInterface.hexToRgb(messageData[1][2]).then(async function(RGB){
-                    //console.log("VALID RGB " + RGB);
+                    console.log("VALID RGB " + RGB);
 
-                    IntNetworking.stringJSON (source,username,true,false, messageData[1][2],RGB[0],RGB[1],RGB[2][2]).then(async function(response){
+                    IntNetworking.stringJSON (source,username,true,false, messageData[1][2],RGB[0],RGB[1],RGB[2]).then(async function(response){
                       //console.log("MESSAGE FRON STRING JSON" + response);
                       IntNetworking.pushToQueue('ExternalMessages', response).then(function (success){
                         return success;

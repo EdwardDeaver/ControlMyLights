@@ -8,7 +8,7 @@ void setup() {
   // put your setup code here, to run once:
   // Note line fees and carraige return count toward the length of your input size
   
-#define INPUT_SIZE 14
+#define INPUT_SIZE 20
   // start serial port at 9600 bps:
   // start serial port at 9600 bps:
   Serial.begin(115200);
