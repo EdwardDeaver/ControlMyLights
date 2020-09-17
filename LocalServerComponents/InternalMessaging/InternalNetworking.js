@@ -77,7 +77,7 @@ class InternalNetworking {
         )
         .end(function (res) {
           if (res.error) throw new Error(res.error);
-          console.log(res.raw_body);
+          //console.log(res.raw_body);
         });
     } catch {
       console.log("error");
@@ -109,7 +109,7 @@ class InternalNetworking {
   getRedisClient() {
     try{
       console.log("in Try");
-      console.log(this.RedisClient);
+     // console.log(this.RedisClient);
       return this.RedisClient;
 
     }
