@@ -35,6 +35,7 @@ myRedisObject.on("message", function (channel, message) {
 	console.log(message);
 	try{
 		RedisNetworking.createFinalJSON (JSON.parse(message)).then(function(jsonObject){
+			jsonObject["color"] = jsonObject["color"].toLowerCase();
 			MongoDB.InsertInto(mongoDB, jsonObject);
 			return true;
 		}).catch(function (error) {

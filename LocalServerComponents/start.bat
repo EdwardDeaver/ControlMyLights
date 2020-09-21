@@ -7,3 +7,5 @@ start "Youtube" python ExternalListeners\YoutubeChatComponent\youtubeComponent.p
 :: start "Arduino" set DEBUG=serialport/* & node InternalListeners\ArduinoSocketIOListener\ArduinoSocketIOInternal.js
 start "Arduino" node InternalListeners\ArduinoSocketIOListener\ArduinoSocketIOInternal.js
 
+start "WebSocketServer" node InternalListeners/WebSocketServer/WebSocketServer.js
+
