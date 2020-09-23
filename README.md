@@ -1,24 +1,24 @@
 # TwitchChatLightControl
 Using Twitch Chat to control my lights. This project is built around Message Oriented Middleware model. 
-## INSTALL INSTRUCTIONS:
+## Local machine install INSTRUCTIONS:
 ### Windows: 
 * PYTHON 3.8 MUST BE INSTALLED - Use one from MS Store
    - "python" MUST BE THE PATH OF Python3.8
 * USE PIP3 install -r LocalServerComponents\Components\YoutubeChatComponent\requirements.txt
    - "pip3" MUST be used to install the requirments file. 
-* INSTALL GOOGLE CHROME BROWSER
 * INSTALL NODE JS  
 * IN LOCALServer run "NPM install" to install requirments
 * INSTALL MONGODB as network service. // also install compass
+* INSTALL REDIS
 * Install the Arduino IDE
-* SET THE ARDUINO PATH IN THE ENV FILE
 * SET ALL VALUES IN ENV FILE
 * Set the machine to not go to sleep in power preferences. 
-* Run from Start Batch file
+* Run from Start Batch file in localmachine
 
 
 ## Purpose:
 
+To raise money for Feeding America
 
 ## Running this:
 You absolutly should be running this in a virtual machine. The local server should also run a VPN. 
