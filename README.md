@@ -25,62 +25,98 @@ You absolutly should be running this in a virtual machine. The local server shou
 ## Distinct Parts of the application:
 
 1. Heroku server (ExternalNodeJSSever)
-2. Your, well mine, desktop (LocalNodeJSServer)
-3. Your external data sources (youtube, X, Y, Z). 
-4. The Arduino/ Hardware 
-5. Youtube Component 
+2. Local machine (LocalNodeJSServer)
+   - External Listeners (YouTube / Twitch / Website) - external data sources 
+   - Internal Listeners (MongoDB / Arduino / WebSocket Server) - listens to the internal Redis queue
+4. Arduino code
+5. ControlMyLights dashboard - video dashboard - https://github.com/EdwardDeaver/ControlMyLightsVideoDashboard
 
-## Requirments
+## Software Requirments
 
 1. MongoDB 
 2. NodeJS
 3. All the package-lists for the NodeJS installs
    - ExternalNodeJSSever
-       -  "express": "^4.17.1",
-       -  "socket.io": "*",
-       - "multer": "^1.4.2",
-       - "cors": "2.8.5",
-       - "dotenv": "*",
-       - "md5": "*"
+      - "cookie-parser": "^1.4.5",
+      - "cookie-session": "^1.4.0",
+      - "cors": "2.8.5",
+      - "dotenv": "*",
+      - "express": "^4.17.1",
+      - "express-session": "^1.17.1",
+      - "md5": "*",
+      - "multer": "^1.4.2",
+      - "socket.io": "*",
+      - "uuid": "^8.3.0"
     - LocalNodeJSServer
-       - "body-parser": "^1.19.0",
-       - "concurrently": "^5.2.0",
-       - "dotenv": "^8.2.0",
-       - "express": "^4.17.1",
-       - "follow-redirects": "^1.11.0",
-       - "mongodb": "^3.5.5",
-       - "serialport": "^9.0.0",
-       - "socket.io": "^2.3.0",
-       - "socket.io-client": "^2.3.0",
-       - "tmi.js": "^1.5.0",
-       - "unirest": "^0.6.0"
-       - "Bull"
-4. Enviroment Variables (EXTERNALNodeJSServer)
-    - You will need to create a .env file in your root with the following information:
-        - secretKey = This is for the JWT token authentication. 
-        - SOCKETIOTOKEN = API TOKEN THAT'S CHECKED WHEN YOU CONNECT TO THE EXTERNAL SERVER.
+      - "body-parser": "^1.19.0",
+      - "bull": "^3.18.0",
+      - "concurrently": "^5.2.0",
+      - "cors": "^2.8.5",
+      - "dotenv": "^8.2.0",
+      - "eventsource": "^1.0.7",
+      - "express": "^4.17.1",
+      - "fast-json-stringify": "^2.2.3",
+      - "follow-redirects": "^1.11.0",
+      - "md5": "^2.3.0",
+      - "mongodb": "^3.5.5",
+      - "multer": "^1.4.2",
+      - "puppeteer": "^4.0.1",
+      - "redis": "^3.0.2",
+      - "serialport": "^9.0.0",
+      - "socket.io": "^2.3.0",
+      - "socket.io-client": "^2.3.0",
+      - "tmi.js": "^1.5.0",
+      - "ws": "^7.3.0"
+4. All the required packages for the Python script: 
+   - certifi==2020.6.20
+   - chardet==3.0.4
+   - colorama==0.4.3
+   - configparser==5.0.0
+   - crayons==0.4.0
+   - idna==2.10
+   - redis==3.5.3
+   - requests==2.24.0
+   - selenium==3.141.0
+   - urllib3==1.25.10
+   - webdriver-manager==3.2.2
+   
 5. Redis for Windows:
      - Port: 6379
      - Memory Limit: 8000Mb
-     - https://github.com/tporadowski/redis/releases
-
+     - Download: https://github.com/tporadowski/redis/releases
+     
+6. If you want to run the Video Dashboard you will need these addons: 
+     - include "ofxGui.h"
+     - include "ofxLibwebsockets.h"
+     - include "ofxJSON.h"
  
-5. Enviroment Variables (LocalNodeJSServer)
+## Software Enviroment variables 
+ 
+1. EXTERNALNodeJSServer
+    - SOCKETIOTOKEN = API TOKEN THAT'S CHECKED WHEN YOU CONNECT TO THE EXTERNAL SERVER. - Set this as a Heroku Config variable. 
+
+2. LocalNodeJSServer
     - You will need to create a .env file in your root with the following information:
         - BOT_USERNAME= YOUR BOT's TWITCH USERNAME
         - OAUTH_TOKEN= YOUR BOT's OATH TOKEN
         - CHANNEL_NAME= CHANNEL YOU WANT TO BE WATCHING CHAT ON
         - EXT_SERVER= URL OF THE EXTERNAL SERVER YOU ARE RUNNING
         - MONGO_DB= DATA BASE NAME OF MONGO DB
-        - INTERNAL_SOCKETIOURL= IP OF INTERNAL SOCKET SERVER, I just use 127.0.0.1 (localhost). 
         - SOCKETIOTOKEN = API TOKEN THAT'S CHECKED WHEN YOU CONNECT TO THE EXTERNAL SERVER.
-6. Hardware:
+        
+## Hardware:
+
+1. PWM RGB Controller: 
    - Arduino Uno
    - 24v RGB analogue LED
-   - MEAN WELL LRS-350-24 350.4W 24V 14.6 Amp PSU (any 24v psu will work)
+   - MEAN WELL LRS-350-24 350.4W 24V 14.6 Amp PSU 
    - FQP30N06L N-Channel Mosfet
    - Perf board
    - USB Cord
+
+2. Video: 
+   - Elgato Cam Link 4k
+   - Canon T6i or any cam with an hdmi output
 
 ## Networking and the dataflow
 
@@ -121,41 +157,7 @@ Uses CORS and referer checks to block requests not from same origin.
    - date: DateTime value (GMT)
 
 
-### Twitch Component (NODE JS):
-This component connect to your twitch channels
-
-1. Pip requirements. 
-   - Requirements:
-      - time
-      - selenium
-      - webdriver_manager
-      - json
-      - re
-      - requests
-      - urllib
-      - pathlib
-      
-      
-### Youtube Component (PYTHON):
-This is a web scrapping component that uses Selenium to obtain youtube comments. Note this could break at any time. 
-This will send the it's data to ExpressServer. 
-
-1. Pip requirements. 
-   - Requirements:
-      - time
-      - selenium
-      - webdriver_manager
-      - json
-      - re
-      - requests
-      - urllib
-      - pathlib
-
 ## External NodeJS Server:
-In order to do analytics after the fact I needed to collect a minimum amount of user data. In this case I wanted to know if it is one person making a lot of actions or a few users. So initially I was going to send IP address that were from the POST request but due to unease about the direct tracking of users and being unsure if I could keep the data private over SocketIO I made a MD5 Hash of the IP Addresses. This way I can still see individual user activity without any identifying information. 
-Initially I tried to pass the IP address through an AES symmetric crypto but due to speed issues I abandoned this idea (the functions were too slow for the post request thread and wouldn't resolve in time).
-
-
 1. POST ( /colorsubmit)(CORS protected)
    - colorHex: String - 6 character hex string
    
