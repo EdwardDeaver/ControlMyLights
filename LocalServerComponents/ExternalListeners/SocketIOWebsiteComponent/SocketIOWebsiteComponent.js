@@ -48,7 +48,7 @@ socket.on('colordata', async function(data){
 		// DUE TO THE VERY REAL POSSIBILITY THAT USERS ARE SHARING A PUBLIC IP on LARGER NETWORKS RATE LIMITING IS BEING DISABLED. 
 		// Replace "true" with  results[0] if you want to rate limit
 		// If the user is not rate limited
-		if(true){
+		if(results[0]){
 			IntNetworking.stringJSON(source, data.userHash,true,hex,data.hexCode.substr(1), results[1][0], results[1][1], results[1][2]).then(async function(results){
 				IntNetworking.pushToQueue('ExternalMessages', results).then(function (success){
 					return success;
