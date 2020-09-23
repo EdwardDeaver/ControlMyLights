@@ -1,0 +1,29 @@
+{
+  "name": "ColorPicker",
+  "version": "0.1.1",
+  "description": "A NodeJS colorpicker",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
+    "cors": "2.8.5",
+    "dotenv": "*",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "md5": "*",
+    "multer": "^1.4.2",
+    "socket.io": "*",
+    "uuid": "^8.3.0"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "socketio",
+    "HardwareInterface"
+  ],
+  "license": "FULL COPYRIGHT"
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Control my lights</title>  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+  
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/a-color-picker@1.1.8/dist/acolorpicker.js"></script>
+  <div class="container">
+      <div class="row">
+        <div class="col" style="height:50vh;">
+            <iframe class="mh-100" src="https://player.twitch.tv/?channel=worldmerge&parent=websitetoleds.herokuapp.com" frameborder="0" allowfullscreen="false" scrolling="no" height="100%" width="100%"></iframe>
+        </div>
+        <div class="col">
+          <iframe class="mh-100" id="chat_embed" src="https://www.twitch.tv/embed/worldmerge/chat?parent=websitetoleds.herokuapp.com" height="100%" width="100%" ></iframe>
+        </div>
+    </div>
+  <div class="row">
+    <div class="col">
+      <h3> Choose a custom color:</h3>
+      <form id="HexChoice">
+        <div class="picker " acp-color="#AABBCC" acp-show-rgb="yes" acp-show-hsl="no" acp-show-hex="yes"></div>
+        <br>
+        <div class="form-group">
+          <label for="colorHex">Color: </label>
+          <input id="colorHex" type="text" name="colorHex" value="#00AAFF"  pattern="[#]{1}[0-9A-Fa-f]{6}" required>
+          <button id="colorHexBTN" class="btn btn-primary" type="submit" value="Set Color">SET COLOR</button>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+      <h3> Color quick choices:</h3>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <form id="red" >
+            <button id="redBTN" class="btn btn-primary btn-lg btn-block" style="background-color:red;" name="colorHex" hextype="submit" value="#FF0000">Red</button>
+          </form>
+        </li>
+        <li class="list-group-item">
+          <form id="orange" >
+            <button id="orangeBTN" class="btn btn-primary btn-lg btn-block" style="background-color:orange; " name="colorHex" type="submit" value="#FFA500">Orange</button>
+          </form>
+        </li>
+        <li class="list-group-item">
+          <form id="yellow" >
+            <button id="yellowBTN" class="btn btn-primary btn-lg btn-block" style="background-color:yellow; color:black;" name="colorHex" type="submit" value="#FFFF00">Yellow</button>
+          </form>
+        </li>
+        <li class="list-group-item">
+          <form id="green" >
+            <button id="greenBTN" class="btn btn-primary btn-lg btn-block" style="background-color:green;" name="colorHex" type="submit" value="#00FF00">Green</button>
+          </form>
+        </li>
+        <li class="list-group-item">
+          <form id="blue" >
+            <button id="blueBTN" class="btn btn-primary btn-lg btn-block" style="background-color:blue;" name="colorHex" type="submit" value="#0000FF">Blue</button>
+          </form>
+        </li>
+        <li class="list-group-item">
+          <form id="indigo" >
+            <button id="indigoBTN" class="btn btn-primary btn-lg btn-block" style="background-color:Indigo;" name="colorHex" type="submit" value="#3f50b5">Indigo</button>
+          </form>
+        </li>
+        <li class="list-group-item">
+          <form id="violet" >
+            <button id="violetBTN" class="btn btn-primary btn-lg btn-block" style="background-color:violet;" name="colorHex" type="submit" value="#EE82EE">Violet</button>
+          </form>
+        </li> 
+
+      </ul>
+    </div>
+  </div>
+</div>
+  <script src="main.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+  </body>
+</html>

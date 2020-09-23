@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142490187-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-142490187-3');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FF00FF" />
+    <meta name="msvalidate.01" content="3528DBA35898AA7F3BD01EAB7A178FB1" />
+    <meta name="description" content="Control my lights using this website, Twitch chat and Youtube chat. An activation by Edward Deaver." />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+
+
+  <link rel="profile" href="https://gmpg.org/xfn/11">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://controlmylights.net">
+
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Control My Lights">
+  <meta property="og:description" content="Control my lights using this website, Twitch chat and Youtube chat. An activation by Edward Deaver.">
+  <meta property="og:url" content="https://controlmylights.net">
+  <meta property="og:site_name" content="Control My Lights">
+
+  <meta property="og:image" content="%PUBLIC_URL%/BlenderLEDs.png">
+  <meta property="og:image:width" content="1711">
+  <meta property="og:image:height" content="1508">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="%PUBLIC_URL%/BlenderLEDs.png">
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+   -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+<style>
+
+  body{
+    position: relative;
+    background: #2c002d;
+  }
+  #LiveControl{
+    background:#2c002d;
+
+  }
+  .colorTitles{
+    color:white;
+  }
+
+  .active{
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  button{
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: rgba(0, 0, 0, 0.4) 1px 1px;
+
+
+  }
+ 
+  .colorNav li{
+    box-shadow: rgba(255, 255, 255, 0.0) 0px 0px  9px 1px; 
+    transition: 0.3s;
+    background-color: rgba(255, 255, 255, 0.0);
+
+  }
+ .colorNav li button:hover{
+  box-shadow: rgba(255, 255, 255, 1) 0px 0px  9px 1px; 
+    transition-timing-function: ease;
+
+
+  }
+  iframe{
+    box-shadow: white 0px 0px  9px 1px; 
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch
+
+}
+.textItem *{
+  color:rgba(255, 255, 255, 1);
+}
+
+.pcr-button{
+  background-image: url('%PUBLIC_URL%/color-wheel.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  border-radius: 100%;
+
+  position: fixed;
+  left: 1vw;
+  bottom: 1vh;
+  height:5rem;
+  width: 5rem;
+  z-index: 5;
+}
+
+
+@media (min-width: 1371px) {
+.navbar-brand
+    {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+svg{
+  fill:white;
+}
+#githublinks li{
+  list-style-image: url("github.svg");
+  display: inline-block;
+}
+#githublinks li img{
+  display: inline-block;
+
+}
+.fab{
+  color: white;
+  fill: white;
+}
+a{
+  color: black;
+}
+
+#cookiesDiv{
+  position: fixed;
+  z-index: 100;
+  right: 2%;
+  bottom: 2%;
+  width:20%;
+  height:auto;
+  min-width: 200px;
+  background: white;
+  color:black;
+  border:5px solid black;
+
+}
+#cookiesDiv p {
+ 
+  position: relative;
+  float:left;
+  word-wrap: break-word; 
+  white-space: pre-line;
+  font-size: 100%;
+
+
+
+}
+#cookiesDiv button{
+  position: relative;
+  float:right;
+}
+</style>
+<script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" integrity="sha384-3Nqiqht3ZZEO8FKj7GR1upiI385J92VwWNLj+FqHxtLYxd9l+WYpeqSOrLh0T12c" crossorigin="anonymous"></script>
+
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/> 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"/>  -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/> <!-- 'nano' theme -->
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Control My Lights</title>
+  </head> 
+  <body  data-spy="scroll" data-target="#TitleNavbar" data-offset="200">
+
+
+<!-- Modern or es5 bundle -->
+<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+<script>
+  function hello() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+  </script>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- Add a placeholder for the Twitch embed -->
+
+
+<!-- Load the Twitch embed script -->
+
+
+<!-- Create a Twitch.Player object. This will render within the placeholder div -->
+<script type="text/javascript">
+// Suppress errors
+
+async function postData(url = '', data = {}) {
+  // Default options are marked with *
+  try{
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      body: data // body data type must match "Content-Type" header
+    });
+    return response;
+  }
+  catch(error){
+    return error;
+  }
+
+  return response; // parses JSON response into native JavaScript objects
+}
+</script>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+   
+  </body>
+</html>
