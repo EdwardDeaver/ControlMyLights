@@ -135,22 +135,13 @@ You absolutly should be running this in a virtual machine. The local server shou
 
 ## Networking and the dataflow
 
-(TWITCH SITE  <--SOCKET--> TwitchComponent.  / Website --SOCKETIO(colordata)--> SocketIOListening ) --POST REQ(/sendcolordata)---> ExpressServer ----SOCKETIO (colorData) ---> ( MongoDBListener --WRITE--> MONGODB.  / ArduinoListener --WRITE--> Arduino)
 
 <img src="https://raw.githubusercontent.com/EdwardDeaver/TwitchChatLightControl/master/Diagrams/FinalControlMyLightsGraph.png?token=AB2WYELT6ZFGOB3LL5FW6TK7OTNQU" width="100%" height="75%">
 
-### External NodeJS Site:
-Uses CORS and referer checks to block requests not from same origin. 
-1. POST ( /colorsubmit)
-    - Site recieves a 6 digit hex value
-2. SOCKETIO (/colordata)
-    - Emits hex color data. 
-    - TODO secure using JWT
-        - Using the JWT will whitelist the localNodeJS server. This is useful if you are using a shared host platform with limited bandwidth or costs with overages. 
-
+    
 ### Local NodeJS Server:
 
-1. POST ( /sendcolordata)
+1. Redis ExternalMessages Queue (data in stringified JSON)
    - source: String - source of the data (ex. Twitch, website)
    - username: String - username of person who sent the message
    - validColor: Boolean  - Was it a valid color or not
@@ -159,8 +150,9 @@ Uses CORS and referer checks to block requests not from same origin.
    - red:  Int - Red value of color
    - green: Int - Green value of color
    - blue: Blue value of color
-
-2. SocketIO (/internalcolordata)
+   - dateTime: (string) TIME IN MILLISECONDS 
+   
+2. Redis channel (InternalMessages)
    - source: String - source of the data (ex. Twitch, website)
    - username: String - username of person who sent the message
    - validColor: Boolean  - Was it a valid color or not
@@ -169,7 +161,7 @@ Uses CORS and referer checks to block requests not from same origin.
    - red:  Int - Red value of color
    - green: Int - Green value of color
    - blue: Blue value of color
-   - date: DateTime value (GMT)
+   - dateTime: (string) TIME IN MILLISECONDS 
 
 
 ## External NodeJS Server:
@@ -177,8 +169,9 @@ Uses CORS and referer checks to block requests not from same origin.
    - colorHex: String - 6 character hex string
    
 2. SocketIO(/colordata)(Token protected)
-   - "userHash": MD5 of IP ADDRESS,
-   - "hexCode": 7 character hex string "#AABBCC" 
+   - "userHash": MD5 of UUID given and stored as cookie,
+   - "hexCode": 7 character hex string "#AABBCC"
+   - "hex": True/False - Is the value coming from the buttons (False) or the custom color picker (True)
 
 
 ## ARDUINO SCHEMA
@@ -195,8 +188,8 @@ Reference: https://arduino.stackexchange.com/questions/1013/how-do-i-split-an-in
 
 ## Analytics 
 ### MongoDB datastore ( Any DB can be used, in place of MongoDB a listener just needs to be created)
-#### Gets data from: SocketIO Local /colordata
-This is used to determine endagment rates per user and endagement per platform, as well as what colors were chosen most often. 
+This is used to deter
+mine endagment rates per user and endagement per platform, as well as what colors were chosen most often. 
 
 Information stored:
    - source: String - source of the data (ex. Twitch, website)
@@ -207,7 +200,7 @@ Information stored:
    - red:  Int - Red value of color
    - green: Int - Green value of color
    - blue: Blue value of color
-   - date: DateTime value (GMT)
+   - dateTime: DateTime value (GMT)
 
 
        
