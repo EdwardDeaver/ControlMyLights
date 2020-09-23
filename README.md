@@ -137,7 +137,7 @@ You absolutly should be running this in a virtual machine. The local server shou
 
 (TWITCH SITE  <--SOCKET--> TwitchComponent.  / Website --SOCKETIO(colordata)--> SocketIOListening ) --POST REQ(/sendcolordata)---> ExpressServer ----SOCKETIO (colorData) ---> ( MongoDBListener --WRITE--> MONGODB.  / ArduinoListener --WRITE--> Arduino)
 
-<img src="https://raw.githubusercontent.com/EdwardDeaver/TwitchChatLightControl/master/Diagrams/Network%20Graph.png?token=AB2WYEJ2P3CK6GVK2A7KRU267OBIG" width="100%" height="75%">
+<img src="https://raw.githubusercontent.com/EdwardDeaver/TwitchChatLightControl/master/Diagrams/FinalControlMyLightsGraph.png?token=AB2WYELT6ZFGOB3LL5FW6TK7OTNQU" width="100%" height="75%">
 
 ### External NodeJS Site:
 Uses CORS and referer checks to block requests not from same origin. 
