@@ -37,16 +37,31 @@ You absolutly should be running this in a virtual machine. The local server shou
 2. NodeJS
 3. All the package-lists for the NodeJS installs
    - ExternalNodeJSSever
-      - "cookie-parser": "^1.4.5",
-      - "cookie-session": "^1.4.0",
-      - "cors": "2.8.5",
-      - "dotenv": "*",
-      - "express": "^4.17.1",
-      - "express-session": "^1.17.1",
-      - "md5": "*",
-      - "multer": "^1.4.2",
-      - "socket.io": "*",
-      - "uuid": "^8.3.0"
+      - Express Server 
+         - "cookie-parser": "^1.4.5",
+         - "cookie-session": "^1.4.0",
+         - "cors": "2.8.5",
+         - "dotenv": "*",
+         - "express": "^4.17.1",
+         - "express-session": "^1.17.1",
+         - "md5": "*",
+         - "multer": "^1.4.2",
+         - "socket.io": "*",
+         - "uuid": "^8.3.0"
+      - React JS Client
+         - "@simonwep/pickr": "^1.7.2",
+         - "@testing-library/jest-dom": "^4.2.4",
+         - "@testing-library/react": "^9.5.0",
+         - "@testing-library/user-event": "^7.2.1",
+         - "axios": "^0.19.2",
+         - "bootstrap": "^4.5.2",
+         -  "mdbreact": "^4.27.0",
+         - "react": "^16.13.1",
+         - "react-bootstrap": "^1.3.0",
+         - "react-dom": "^16.13.1",
+         - "react-helmet": "^6.1.0",
+         - "react-script-tag": "^1.1.2",
+         - "react-scripts": "3.4.1"
     - LocalNodeJSServer
       - "body-parser": "^1.19.0",
       - "bull": "^3.18.0",
