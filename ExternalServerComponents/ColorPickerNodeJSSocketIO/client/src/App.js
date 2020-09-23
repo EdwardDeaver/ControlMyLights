@@ -141,7 +141,7 @@ function App() {
                   </div>
                   <div className="col-lg h-75 ">
                         <ul id="githubinks" >
-                          <li >  <a href="http://bit.ly/controlmylightsgithub" rel="noopener noreferrer" target="_blank"> <span style={{fontSize: "20px", color: "white"}}><i class="fab fa-github-square"></i>  Github for the desktop application</span></a> </li>
+                          <li >  <a href="http://bit.ly/controlmylightsgithub" rel="noopener noreferrer" target="_blank"> <span style={{fontSize: "20px", color: "white"}}><i class="fab fa-github-square"></i>  Github for the Control My Lights repository</span></a> </li>
                         </ul>
                   </div>
                 </div>
