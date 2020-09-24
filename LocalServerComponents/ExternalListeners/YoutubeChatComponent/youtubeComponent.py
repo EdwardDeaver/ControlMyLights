@@ -40,7 +40,7 @@ YoutubeStreamID = '_M-S6292Gd8'
 YoutubeChatURL  = 'https://www.youtube.com/live_chat?v='
 TOTALYOUTUBEURL = YoutubeChatURL+YoutubeStreamID
 UserNameTime = {}  # Usernames and times
-timeoutlength = 5 # seconds
+timeoutlength = 1 # seconds
 maxSize = 100000
 entryAmount = 0
 
