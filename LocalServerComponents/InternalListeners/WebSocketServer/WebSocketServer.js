@@ -72,7 +72,12 @@ wss.on('connection', function connection(ws) {
     console.log("WERE HIT");
     console.log(message);
     try{
-          ws.send(message);
+      RedisNetworking.createFinalJSON(JSON.parse(message)).then(function(jsonObject){
+        jsonObject["color"] = jsonObject["color"].toLowerCase();
+        console.log("jsonObject");
+        console.log(jsonObject );
+          ws.send(JSON.stringify(jsonObject));
+      });
     }
     catch(e){
       console.log(e);
