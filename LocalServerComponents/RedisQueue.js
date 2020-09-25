@@ -32,7 +32,19 @@ async function getData() {
         console.log("NEXT TICK LPOP");
         if (reply !== null) {
           console.log(reply);
-          console.log(IntNetworking.publishRedis("InternalMessages", reply));
+
+
+          RedisNetworking.createFinalJSON(JSON.parse(reply)).then(function(jsonObject){
+            jsonObject["color"] = jsonObject["color"].toLowerCase();
+            console.log("jsonObject");
+            console.log(jsonObject );
+            console.log(IntNetworking.publishRedis("InternalMessages", JSON.stringify(jsonObject)));
+          }).catch(function(errors){
+            console.log(errors);
+          });
+
+
+         // console.log(IntNetworking.publishRedis("InternalMessages", reply));
           return true;
         }
       }

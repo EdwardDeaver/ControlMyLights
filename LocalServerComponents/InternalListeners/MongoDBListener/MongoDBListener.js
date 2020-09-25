@@ -33,15 +33,12 @@ let myRedisObject = RedisNetworking.getRedisClient();
 myRedisObject.on("message", function (channel, message) { 
 	console.log("WERE HIT");
 	console.log(message);
+	let JSONPARSED = JSON.parse(message);
+	JSONPARSED["color"] = JSONPARSED["color"].toLowerCase();
+	JSONPARSED["dateTime"] = new Date(JSONPARSED["dateTime"]);
+
 	try{
-		RedisNetworking.createFinalJSON (JSON.parse(message)).then(function(jsonObject){
-			jsonObject["color"] = jsonObject["color"].toLowerCase();
-			MongoDB.InsertInto(mongoDB, jsonObject);
-			return true;
-		}).catch(function (error) {
-			console.log(error);
-			return false;			
-		});
+		MongoDB.InsertInto(mongoDB, JSONPARSED);
 	}
 	catch(e){
 	  console.log(e);
