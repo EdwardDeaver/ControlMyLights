@@ -38,7 +38,13 @@ async function getData() {
             jsonObject["color"] = jsonObject["color"].toLowerCase();
             console.log("jsonObject");
             console.log(jsonObject );
-            console.log(IntNetworking.publishRedis("InternalMessages", JSON.stringify(jsonObject)));
+            IntNetworking.stringJSON (jsonObject["source"],jsonObject["username"],jsonObject["validColor"],jsonObject["hex"],jsonObject["color"],jsonObject["red"],jsonObject["green"],jsonObject["blue"]).then(async function(response){
+              console.log(IntNetworking.publishRedis("InternalMessages",response));
+
+            }).catch(function(error){
+              console.log(error);
+
+            });
           }).catch(function(errors){
             console.log(errors);
           });
