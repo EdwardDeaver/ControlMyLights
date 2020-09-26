@@ -24,7 +24,7 @@ const ColorData = require('../../InputValidation/ColorData');
 const colorDataInterface = new ColorData();
 
 const RateLimiting = require('../../UserRateLimiting/UserRateLimiting');
-const RateLimitingControl = new RateLimiting(5, 100000);
+const RateLimitingControl = new RateLimiting(1, 100000);
 
 const source = "Twitch";
 
