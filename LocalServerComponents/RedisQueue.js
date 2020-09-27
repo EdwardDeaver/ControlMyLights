@@ -59,7 +59,7 @@ async function getData() {
         return false;
       }
     });
-  }, 250); 
+  }, 500); 
 }
 
 getData();

@@ -58,10 +58,16 @@ ArduinoInterfaceParser.on('data', console.log);
 myRedisObject.on("message", function (channel, message) { 
 	//console.log(message);
 	try{
-	  let jsonObject =  parse(message);
+	  //let jsonObject =  parse(message);
 	  //console.log("REDIS");
 	  //console.log(jsonObject);
-	  ArduinoInterfaceFunc.writeToArduino(jsonObject.red+":"+jsonObject.green+":"+jsonObject.blue);	
+	  //ArduinoInterfaceFunc.writeToArduino(jsonObject.red+":"+jsonObject.green+":"+jsonObject.blue);	
+	  parse(message).then(async function(parsedData){
+		ArduinoInterfaceFunc.writeToArduino(parsedData.red+":"+parsedData.green+":"+parsedData.blue);	
+
+	  }).catch(function(error){
+		  console.log(error);
+	  });
 	}
 	catch(e){
 	  console.log(e);
@@ -69,7 +75,7 @@ myRedisObject.on("message", function (channel, message) {
   }); 
 
   
-  function parse(value) {
+ async function parse(value) {
 	return JSON.parse(value);
   }
 
