@@ -17,7 +17,7 @@ class ArduinoInterface {
 	///////////////////////////////////////////
 	constructor(serialPortPath, baudRateAmount) {
   		this.port = new SerialPort(serialPortPath,{baudRate: baudRateAmount});
-		this.parser = this.port.pipe(new Readline({ delimiter: '\r\n' }))
+		this.parser = this.port.pipe(new Readline({ delimiter: '\n' }))
 	}
 
 	///////////////////////////////////////////
@@ -26,7 +26,7 @@ class ArduinoInterface {
 	// Return value - nothing
 	///////////////////////////////////////////
  	writeToArduino(input) {
-		this.port.write(Buffer.from(input+'\r\n'), function(err) {
+		this.port.write(Buffer.from(input+'\n'), function(err) {
   		if (err) {
     		return console.log('Error on write: ', err.message)
   		}

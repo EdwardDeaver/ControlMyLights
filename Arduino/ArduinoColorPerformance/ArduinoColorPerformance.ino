@@ -103,13 +103,14 @@ void serialEvent() {
       break;
     }
     else{
-      Serial.print("input char");
-      Serial.print(inChar);
+      //Serial.print("input char");
+      //Serial.print(inChar);
       inputString += inChar;
 
     }
 
   }
+ 
         Serial.println(inputString);
         Serial.println(inputString.substring(0,3));
         Serial.println((inputString.substring(0,3)).toInt());
@@ -119,7 +120,8 @@ void serialEvent() {
                         Serial.println(inputString);
         Serial.println(inputString.substring(8,11));
         Serial.println((inputString.substring(8,11)).toInt());
-        writeToRGB((inputString.substring(0,3)).toInt(),  (inputString.substring(4,7)).toInt(),   (inputString.substring(4,7)).toInt());
+        
+        writeToRGB((inputString.substring(0,3)).toInt(),  (inputString.substring(4,7)).toInt(),   (inputString.substring(8,11)).toInt());
         
       inputString = "";
   // put your main code here, to run repeatedly:

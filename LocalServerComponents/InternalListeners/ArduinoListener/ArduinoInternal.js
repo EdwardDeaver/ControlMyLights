@@ -58,12 +58,19 @@ ArduinoInterfaceParser.on('data', console.log);
 myRedisObject.on("message", function (channel, message) { 
 	//console.log(message);
 	try{
-	  //let jsonObject =  parse(message);
-	  //console.log("REDIS");
-	  //console.log(jsonObject);
-	  //ArduinoInterfaceFunc.writeToArduino(jsonObject.red+":"+jsonObject.green+":"+jsonObject.blue);	
+	  // All digits need to be three characters long
 	  parse(message).then(async function(parsedData){
-		ArduinoInterfaceFunc.writeToArduino(parsedData.red+":"+parsedData.green+":"+parsedData.blue);	
+		  // convert to strings
+		  let StringRed = (parsedData.red).toString();
+		  let StringGreen = (parsedData.green).toString();
+		  let StringBlue = (parsedData.blue).toString();
+		  //
+		  StringRed =  addZeros(StringRed);
+		  StringGreen = addZeros(StringGreen);
+		  StringBlue = addZeros(StringBlue);
+		  console.log("NODEJS SENT:"+StringRed+":"+StringGreen+":"+StringBlue);
+// Not for some reason the new method looses the first character after the first message. IDK why, but this fix works. 
+		ArduinoInterfaceFunc.writeToArduino("0"+StringRed+":"+StringGreen+":"+StringBlue);	
 
 	  }).catch(function(error){
 		  console.log(error);
@@ -79,6 +86,20 @@ myRedisObject.on("message", function (channel, message) {
 	return JSON.parse(value);
   }
 
+
+  //////////// Add 0s to strings
+  function addZeros(input){
+	  let lengthOfString = input.length;
+	  if(lengthOfString == 3){
+		  return input;
+	  }
+	  else if(lengthOfString == 2){
+		 return "0"+input; 
+	  }
+	  else{
+		return "00"+input; 
+	  }
+  }
 //////////////////////////////////////////////////////
 // Connects to Express SocketIO SERVER
 //////////////////////////////////////////////////////
