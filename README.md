@@ -1,5 +1,7 @@
-# TwitchChatLightControl
-Using Twitch Chat to control my lights. This project is built around Message Oriented Middleware model. 
+# Control My Lights
+Using SocketIO, Twitch chat, YouTube chat to build an interactive activation to raise money for Feeding America. 
+
+Operates in a Message Oriented Middleware paradigm. 
 ## Local machine install INSTRUCTIONS:
 ### Windows: 
 * PYTHON 3.8 MUST BE INSTALLED - Use one from MS Store
